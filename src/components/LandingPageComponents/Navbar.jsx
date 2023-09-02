@@ -6,9 +6,9 @@ import { NavLink } from 'react-router-dom'
 const Navbar = () => {
     //border-4 border-indigo-500/100
   return (
-    <div className='fixed w-[100%]'>
+    <div className='fixed w-[100%] z-10'>
     <div className='w-[100%] h-[2.7em] bg-primary-blue'></div>
-    <div className='p-[1.5rem] bg-white w-[100%] flex flex-row flex-wrap  justify-between overflow-y-hidden text-3xl shadow-2xl text-black-color font-semibold' >
+    <div className='p-[1rem] bg-white w-[100%] flex flex-row flex-wrap  justify-between overflow-y-hidden text-3xl shadow-2xl text-black-color font-semibold' >
       
        
       <div className='w-[8rem] flex justify-center items-center'>LOGO</div>
