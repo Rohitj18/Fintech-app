@@ -14,6 +14,9 @@ module.exports = {
         "primary-white":"#ffffff",
         "secondary-white":"#E6E6E6"
       },
+      fontFamily:{
+        Oswald:['Oswald','Fraunces','Poppins','sans-serif'] 
+      }
     },
   },
   plugins: [],
