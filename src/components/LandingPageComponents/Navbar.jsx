@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import TickerTape from './TickerTape'
 
 // h-[100vh] w-[100%] bg-gradient-to-l from-ternary-color from-50% via-secondary-color via-30% to-primary-color to-20%
 
@@ -7,7 +8,8 @@ const Navbar = () => {
     //border-4 border-indigo-500/100
   return (
     <div className='fixed w-[100%] z-10'>
-    <div className='w-[100%] h-[2.7em] bg-primary-blue'></div>
+    <TickerTape/>
+    <div className='w-[100%] h-[0.3em] bg-primary-blue'></div>
     <div className='p-[1rem] bg-white w-[100%] flex flex-row flex-wrap  justify-between overflow-y-hidden text-3xl shadow-2xl text-black-color font-semibold' >
       
        

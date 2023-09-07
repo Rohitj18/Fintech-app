@@ -2,17 +2,11 @@ import React from 'react'
 import cards from '../../assets/LandingPageAssests/card-landingpage.png'
 import Button from '../Common/Button'
 import { FaRegPlayCircle } from 'react-icons/fa'
-import { useEffect, useState } from 'react'
+import { useEffect} from 'react'
 import { useTypewriter } from 'react-simple-typewriter'
 import {useSpring,animated} from 'react-spring';
 import Aos from 'aos';
 import "aos/dist/aos.css"
-
-const getStocksData = async () => {
-    const response = await fetch('https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=CYUQ1GFIPA075SOW');
-    const data = await response.json();
-    return data;
-}
 
 function Number({n}){
     const {number} = useSpring({
@@ -26,11 +20,8 @@ function Number({n}){
 
 const FirstSection = () => {
     let iconStyles = { color: "white", fontSize: `2em` }
-    const [stockData, setStockData] = useState([]);
     useEffect(() => {
         Aos.init({ duration: 2500 });
-        setStockData(getStocksData());
-
     }, [])
     const [text] = useTypewriter({
         words: ['Investments', 'Assests', 'Expenses', 'Taxation'],
