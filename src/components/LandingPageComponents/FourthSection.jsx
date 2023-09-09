@@ -1,6 +1,5 @@
 import React from 'react'
 import FeatureCard from './FeatureCard'
-import featurephone from '../../assets/LandingPageAssests/iphone.jpg'
 
 const FourthSection = () => {
   return (
@@ -18,7 +17,6 @@ const FourthSection = () => {
         {/* right section */}
         <div className='flex gap-4 w-[50%] max-w-[50%] justify-center items-center'>
             <div className='h-[100%] w-[80%]'>
-                <img src={featurephone} alt="" className='w-[100%] h-[100%]'/>
             </div>
         </div>
       </div>
