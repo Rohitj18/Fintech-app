@@ -37,7 +37,6 @@ const TickerTape = () => {
     useEffect(()=>{
         fetchData();
     },[]);
-    const [animationRunning, setAnimationRunning] = useState(false);
     const wrapperRef = useRef();
     const indexRef = useRef();
 
