@@ -12,7 +12,7 @@ const SecondSection = () => {
         Aos.init({duration:3000});
     },[])
   return (
-    <div className="h-[80vh] w-[100%] ">
+    <div className="h-[65vh] w-[100%] ">
       <div className="flex flex-row flex-wrap h-[100%] w-[100%]">
         {/* left section*/}
         <div className="h-[100%] w-[50%] max-w-[50%] flex flex-col justify-center items-start ">
