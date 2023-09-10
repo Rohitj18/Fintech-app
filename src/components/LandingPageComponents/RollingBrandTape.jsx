@@ -21,7 +21,7 @@ function RollingBrandTape() {
   ];
 
   return (
-    <AppContainer className="bg-gradient-to-l from-ternary-color from-50% via-secondary-color via-30% to-primary-color to-20%">
+    <AppContainer className=" mt-[6rem] bg-gradient-to-l from-ternary-color from-50% via-secondary-color via-30% to-primary-color to-20%">
       <Wrapper>
         <Text className="">With Great Outcomes.</Text>
         <Note className="text-4xl">These companies trust us with their money</Note>
