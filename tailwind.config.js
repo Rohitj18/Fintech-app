@@ -12,7 +12,28 @@ module.exports = {
         "primary-blue":"#2d5eff",
         "secondary-blue":"#2d8fff",
         "primary-white":"#ffffff",
-        "secondary-white":"#E6E6E6"
+        "secondary-white":"#E6E6E6",
+
+
+
+        richblack: {
+          5: "#F1F2FF",
+          25: "#DBDDEA",
+          100: "#AFB2BF",
+          200: "#999DAA",
+          700: "#2C333F",
+          800: "#161D29",
+          900: "#000814",
+        },
+        blue: {
+          100: "#47A5C5",
+        },
+        pink: {
+          200: "#EF476F",
+        },
+        yellow: {
+          50: "#FFD60A",
+        },
       },
       fontFamily:{
         Oswald:['Oswald','Fraunces','Poppins','sans-serif'] 

@@ -12,13 +12,13 @@ const SecondSection = () => {
         Aos.init({duration:3000});
     },[])
   return (
-    <div className="h-[80vh] w-[100%] ">
+    <div className="h-[65vh] w-[100%] ">
       <div className="flex flex-row flex-wrap h-[100%] w-[100%]">
         {/* left section*/}
         <div className="h-[100%] w-[50%] max-w-[50%] flex flex-col justify-center items-start ">
 
           <div  data-aos="fade-right" className="h-[100%] w-[100%] pt-4">
-            <img src={handMobile} alt="" />
+            <img className="w-[100%] h-[100%]" src={handMobile} alt="" />
           </div>
 
         </div>

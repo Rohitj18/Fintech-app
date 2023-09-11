@@ -41,11 +41,11 @@ const Navbar = () => {
       <div className='flex flex-row  justify-between w-[13rem]  '>
 
       <div className='nav-link'>
-       <NavLink data-id="5" style={{ textDecoration: 'none' }} to="/" >Login</NavLink>
+       <NavLink data-id="5" style={{ textDecoration: 'none' }} to="/login" >Login</NavLink>
        </div>
 
       <div className='nav-link'>
-       <NavLink data-id="6" style={{ textDecoration: 'none' }} to="/" >Sign Up</NavLink>
+       <NavLink data-id="6" style={{ textDecoration: 'none' }} to="/singup" >Sign Up</NavLink>
        </div>
 
       </div>
