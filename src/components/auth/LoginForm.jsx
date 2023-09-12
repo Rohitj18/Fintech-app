@@ -1,13 +1,14 @@
 import React from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom'
+import { NavLink,useNavigate} from 'react-router-dom'
+
 
 const LoginForm = () => {
 
     // let iconStyles = { color: "white", fontSize: '2.3rem' };
 
-
+    const navigate  = useNavigate();
     const [formData, setFormData] = useState({
         email: "", password: ""
     })
@@ -31,6 +32,8 @@ const LoginForm = () => {
 
         console.log("Printing the formData ");
         console.log(formData)
+        navigate('/profile')
+        
 
     }
 

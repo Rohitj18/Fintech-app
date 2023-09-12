@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import OTPform from "./components/auth/OTPform";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/otp" element={<OTPform/>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/profile" element={<Profile/>}/>
       </Routes>
     </div>
   );
