@@ -10,11 +10,7 @@ const SignupForm = () => {
     const navigate = useNavigate();
 
     const [isOtpForm, setIsOtpForm] = useState(false);
-    const [isresend,SetIsResend] = useState(false);
 
-    const resendfunc= ()=>{
-        SetIsResend(!isresend);
-    }
 
     const [formData, setFormData] = useState({
         firstName: "",
