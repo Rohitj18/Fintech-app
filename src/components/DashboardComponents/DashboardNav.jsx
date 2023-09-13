@@ -4,8 +4,10 @@ import {RiCurrencyFill} from 'react-icons/ri'
 import {MdDataThresholding} from 'react-icons/md'
 import foxlogo from '../../assets/foxwealthlogo.png'
 
+
 const DashboardNav = () => {
     let iconStyles = { color: "white" };
+   
   return (
     <div className='flex flex-col w-[20%] h-[100%] bg-ternary-color py-12'>
                 {/* profile */}
@@ -31,7 +33,9 @@ const DashboardNav = () => {
                     </div>
                     <div className='flex flex-row gap-4 w-[100%] h-[10%] px-12 transition-all duration-800 ease-in-out hover:bg-primary-blue justify-start items-center'>
                         <RiCurrencyFill size={24} style={iconStyles}/>
-                        <p className='text-3xl text-white'>Expenses</p>
+                    <p className='text-3xl text-white'>Expenses</p>
+                         
+
                     </div>
                     <div className='flex flex-row gap-4 w-[100%] h-[10%] px-12 transition-all duration-800 ease-in-out hover:bg-primary-blue justify-start items-center'>
                         <AiOutlineStock size={24} style={iconStyles}/>

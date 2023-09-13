@@ -6,6 +6,8 @@ import Signup from "./pages/Signup";
 import OTPform from "./components/auth/OTPform";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import Expense from "./pages/Expense";
+
 
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
         <Route path="/otp" element={<OTPform/>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/profile" element={<Profile/>}/>
+        <Route path="/expense" element={<Expense/>}/>
       </Routes>
     </div>
   );
