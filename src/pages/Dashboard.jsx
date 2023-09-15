@@ -8,10 +8,8 @@ import Graph from '../components/DashboardComponents/Graph'
 import visalogo from '../assets/DashboardAssests/visalogo.png'
 import { news } from '../components/DashboardComponents/NewsData'
 import marketlogo from '../assets/DashboardAssests/maketnews.jpeg'
-import { useNavigate } from 'react-router-dom'
 
 const Dashboard = () => {
-    const navigate = useNavigate;
     let newData = news.articles;
 
     const [final_width, setFinalWidth] = useState('');

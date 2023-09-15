@@ -1,21 +1,51 @@
 const express = require("express");
 const app = express();
 
-require('dotenv').config();
+const userRoutes = require("./routes/User");
+
+const database = require("./config/database");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const {cloudinaryConnect} = require("./config/cloudinary");
+const fileUpload = require("express-fileupload");
+require("dotenv").config();
 const PORT = process.env.PORT || 4000;
 
-//cookie-parser - what is this and why we need this ?
+//database connect
+database.connect();
 
+//middleware
 app.use(express.json());
+app.use(cookieParser());
+// app.use(
+//     cors({
+//         origin:"http://localhost:3000",
+//         credentials:true,
+//     })
+// );
 
-require("./config/database").connect();
+app.use(
+    fileUpload({
+        useTempFiles:true,
+        tempFileDir:"/tmp",
+    })
+);
 
-//route import and mount
-const user = require("./routes/user");
-app.use("/api/v1", user);
+//cloudinary connection
+// cloudinaryConnect();
 
-//actuivate
+//routes
+app.use("/api/v1/auth",userRoutes);
 
-app.listen(PORT, () => {
-    console.log(`App is listening at ${PORT}`);
+//get routes
+
+app.get("/",(req,res)=>{
+    return res.json({
+        success:true,
+        message:"you server is up and running",
+    })
+});
+
+app.listen(PORT,()=>{
+    console.log(`app is running at port ${PORT}`);
 })
