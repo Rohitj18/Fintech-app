@@ -67,7 +67,7 @@ const SignupForm = () => {
 
 
 
-            <form onSubmit={submitHandler} className={`flex flex-col w-[60%] gap-y-4 mt-6 items-center justify-center ${isOtpForm == false ? "visible" : "hidden"}`}>
+            <form onSubmit={submitHandler} className={`flex flex-col w-[60%] gap-y-4 mt-6 items-center justify-center ${isOtpForm === false ? "visible" : "hidden"}`}>
 
                 {/* email Add */}
 
@@ -139,7 +139,7 @@ const SignupForm = () => {
                     </button>
                 </div>
             </form>
-            <form onSubmit={otphandler} className={`flex flex-col w-[60%] gap-4 mt-6 items-center justify-center ${isOtpForm == true ? "visible" : "hidden"}`}>
+            <form onSubmit={otphandler} className={`flex flex-col w-[60%] gap-4 mt-6 items-center justify-center ${isOtpForm === true ? "visible" : "hidden"}`}>
                 <div className='flex flex-col items-center gap-3'>
                     <p className='font-bold text-6xl'>Verification</p>
                     <p className='font-semibold text-3xl'>Enter the code sent to your email.</p>
