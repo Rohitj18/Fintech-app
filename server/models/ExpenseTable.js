@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
 const ExpenseTableSchema = new mongoose.Schema({
-    walletid:{
+    userId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
     },
-    allstocks:{
+    allExpense:{
         type:[mongoose.Schema.Types.ObjectId],
         ref:"Expense"
     }

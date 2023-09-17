@@ -6,23 +6,17 @@ const ExpenseSchema = new mongoose.Schema({
         required:true,
     },
     timeStamp:{
-        type:[Map],
-        of:new mongoose.Schema(
-            {
-                time:Date.now(),
-                price:Number,
-                qty:Number,
-            }
-        )
+        type:Date,
+        default:Date.now()
     },
     amount:{
         type:Number,
         required:true,
     },
-    Name:{
+    name:{
         type:String,
     },
-    Desc:{
+    desc:{
         type:String,
 
     }
