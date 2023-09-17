@@ -10,11 +10,7 @@ const TransactionSchema = new mongoose.Schema({
         ref:"Stocks"
     },
     timestamp:{
-        type:Map,
-        of:{
-            time:Date.now(),
-            price:Number,
-        }
+        type:mongoose.Schema.Types.Mixed,
     },
     qty:{
         type:Number,

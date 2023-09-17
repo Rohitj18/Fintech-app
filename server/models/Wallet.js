@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
-
 const WalletSchema = new mongoose.Schema({
-    userid: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:"User"
+        ref:"User",
+        required:true,
     },
     currentbalance:{
         type:Number,
-        required:true,
+        default:0,
     },
     transactionhistroy:{
         type:mongoose.Schema.Types.ObjectId,
@@ -19,6 +19,7 @@ const WalletSchema = new mongoose.Schema({
     },
     carddetails:{
         type:Number,
+        default:null
     },
     stocks:{
         type:mongoose.Schema.Types.ObjectId,

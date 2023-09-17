@@ -1,123 +1,100 @@
-// const Wallet= require('../models/Wallet');
-// const User = require('../models/User');
+const Wallet= require('../models/Wallet');
+const User = require('../models/User');
 
-// exports.CreateWallet = async(req,res)=>{
-//     try {
-//         const {email,category,amount,name,desc} = req.body;
-//         if(!email||!category||!amount||!name||!desc){
-//             return res.status(403).json({
-//                 success:false,
-//                 message:"all field required",
-//             });
-//         }
-//         const user = await User.findOne({email});
-//         const response = await Expense.create({category,amount,name,desc});
-//         if(!response){
-//             return res.status(403).json({
-//                 success:false,
-//                 message:"Could not create Expense , please try again",
-//             });
-//         }
-//         const isTable = await ExpenseTable.findOne({userId:user._id});
-//         console.log("Reached here")
-//         let tableresponse = null;
-//         if(isTable){
-//             tableresponse= await ExpenseTable.findOneAndUpdate({userId:user._id},{$push:{allExpense:response._id}});
-//         }else{
-//             let createtableresponse = await ExpenseTable.create({userId:user._id});
-//             if(!createtableresponse){
-//                 return res.status(403).json({
-//                     success:false,
-//                     message:"Error while creating table"
-//                 });
-//             }
-//             tableresponse= await ExpenseTable.findOneAndUpdate({userId:user._id},{$push:{allExpense:response._id}});
-//         }
-//         if(!tableresponse){
-//             return res.status(403).json({
-//                 success:false,
-//                 message:"Error occured while table operations"
-//             });
-//         }
+exports.AddMoney = async(req,res)=>{
+    try {
+        const {email,carddetails,amount} = req.body;
+        if(!email||!carddetails||!amount){
+            return res.status(403).json({
+                success:false,
+                message:"all field required",
+            });
+        }
+        if(amount<=0){
+            return res.status(402).json({
+                success:false,
+                message:"Amount should be greater than zero",
+            }); 
+        }
+        const user = await User.findOne({email});
+        console.log(user);
+        const isWallet = await Wallet.findOne({userId:user._id});
+        if(!isWallet){
+            const walletCreationResponse = await Wallet.create({userId:user._id,carddetails:carddetails});
+            if(!walletCreationResponse){
+                return res.status(402).json({
+                    success:false,
+                    message:"Error occured while creating wallet"
+                }); 
+            }
+        }
+        const response = await Wallet.findOneAndUpdate({userId :user._id}, {$inc : {currentbalance : Number(amount)}}).exec();
+        
 
-//         res.status(200).json({
-//             success:true,
-//             data:response,
-//             message:"succesfully created expense",
-//         }); 
+        if(!response){
+            return res.status(402).json({
+                success:false,
+                message:"Error occured while adding money",
+            }); 
+        }
 
 
-//     } catch (error) {
-//         console.log(error);
-//         console.log(error.message);
-//         return res.status(400).json({
-//             success:false,
-//             message:"Error while Creating expense",
-//         });
-//     }
-// }
+        res.status(200).json({
+            success:true,
+            data:response,
+            message:"succesfully Added money",
+        }); 
+
+
+    } catch (error) {
+        console.log(error);
+        console.log(error.message);
+        return res.status(500).json({
+            success:false,
+            message:"Error while Adding money to wallet",
+        });
+    }
+}
  
-// exports.getallexpense = async(req,res)=>{
-//     try {
-//         const {userId} = req.body;
-//         if(!userId){
-//             return res.status(403).json({
-//                 success:false,
-//                 message:"all field required",
-//             });
-//         }
-//         const response = await ExpenseTable.findOne({userId:userId}).populate("allExpense").exec();
-//         res.status(200).json({
-//             success:true,
-//             data:response,
-//             message:"Successfully fetched all expenses",
-//         }); 
+exports.getWalletDetails = async(req,res)=>{
+    try {
+        const {userId} = req.body;
+        if(!userId){
+            return res.status(403).json({
+                success:false,
+                message:"all field required",
+            });
+        }
+        const isWallet = await Wallet.findOne({userId:userId});
+        if(!isWallet){
+            const walletCreationResponse = await Wallet.create({userId:userId});
+            if(walletCreationResponse){
+                return res.status(402).json({
+                    success:false,
+                    message:"Error occured while creating wallet",
+                }); 
+            }
+        }
+        const wallet = await Wallet.findOne({userId:userId}).populate('transactionhistroy','wallettransactionhistory').exec();
+        if(!wallet){
+            return res.status(402).json({
+                success:false,
+                message:"Error while fetching data from wallet",
+            });
+        }
 
-//     } catch (error) {
-//         console.log(error);
-//         console.log(error.message);
-//         return res.status(400).json({
-//             success:false,
-//             message:"Error while fetching additional details",
-//         });
-//     }
-// }
-
-// exports.deleteExpense = async(req,res)=>{
-//     try {
-//         const {userId,objectid} = req.body;
-//         if(!userId || !objectid){
-//             return res.status(403).json({
-//                 success:false,
-//                 message:"all field required",
-//             });
-//         }
-//         const response = await ExpenseTable.findOneAndUpdate({userId:userId},{ $pull: { allExpense:objectid } },{ safe: true, multi: false });
-//         if(!response){
-//             return res.status(400).json({
-//                 success:false,
-//                 message:"Error while deleting in table",
-//             });
-//         }
-//         const expensedeletion = await Expense.findByIdAndDelete({_id:objectid});
-//         if(!expensedeletion){
-//             return res.status(400).json({
-//                 success:false,
-//                 message:"Error while deleting in expenses",
-//             });
-//         }
-//         res.status(200).json({
-//             success:true,
-//             data:response,
-//             message:"Succesfully deleted expense",
-//         }); 
-
-//     } catch (error) {
-//         console.log(error);
-//         console.log(error.message);
-//         return res.status(400).json({
-//             success:false,
-//             message:"Something went wrong while deleting expense",
-//         });
-//     }
-// }
+        res.status(200).json({
+            success:true,
+            data:wallet,
+            message:"succesfully fetched wallet data",
+        }); 
+        
+    } catch (error) {
+        console.log(error);
+        console.log(error.message);
+        return res.status(400).json({
+            success:false,
+            message:"Error while fetching additional details",
+        });
+    }
+}

@@ -1,15 +1,20 @@
 const express = require("express");
 const app = express();
+const cookieParser = require("cookie-parser");
+const fileUpload = require("express-fileupload");
 
+
+//routes
 const userRoutes = require("./routes/User");
 const expenseRoutes = require("./routes/Expense");
+const walletRoutes = require("./routes/Wallet");
+const stockRoutes = require("./routes/Stocks");
 
 const database = require("./config/database");
-const cookieParser = require("cookie-parser");
 // const cors = require("cors");
 // const {cloudinaryConnect} = require("./config/cloudinary");
-const fileUpload = require("express-fileupload");
-require("dotenv").config({path:require('find-config')('.env')});
+
+require("dotenv").config({path:"./server/vars/.env"});
 const PORT = process.env.PORT || 4000;
 
 //database connect
@@ -38,6 +43,8 @@ app.use(
 //routes
 app.use("/api/v1/auth",userRoutes);
 app.use("/api/v1/auth",expenseRoutes);
+app.use("/api/v1/auth",walletRoutes);
+app.use("/api/v1/auth",stockRoutes);
 //get routes
 
 app.get("/",(req,res)=>{

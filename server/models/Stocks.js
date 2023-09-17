@@ -7,14 +7,7 @@ const StocksSchema = new mongoose.Schema({
         unique: true
     },
     timeStamp:{
-        type:[Map],
-        of:new mongoose.Schema(
-            {
-                time:Date.now(),
-                price:Number,
-                qty:Number,
-            }
-        )
+        type:[mongoose.Schema.Types.Mixed]
     },
     totalqty:{
         type:Number,
