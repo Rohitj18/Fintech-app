@@ -1,5 +1,8 @@
 const Wallet= require('../models/Wallet');
 const User = require('../models/User');
+const WalletTransaction = require('../models/WalletTransaction');
+const walletTransactionTable = require('../models/WalletTransactionTable');
+const WalletTransactionTable = require('../models/WalletTransactionTable');
 
 exports.AddMoney = async(req,res)=>{
     try {
@@ -29,15 +32,29 @@ exports.AddMoney = async(req,res)=>{
             }
         }
         const response = await Wallet.findOneAndUpdate({userId :user._id}, {$inc : {currentbalance : Number(amount)}}).exec();
-        
-
         if(!response){
             return res.status(402).json({
                 success:false,
                 message:"Error occured while adding money",
             }); 
         }
-
+        const isWalletTransTable = await WalletTransaction.findOne({walletid:response._id});
+        if(!isWalletTransTable){
+            isWalletTransTable = await WalletTransactionTable.create({walletid:response._id});
+            if(!isWalletTransTable){
+                return res.status(402).json({
+                    success:false,
+                    message:"Error occured while creating wallettranstable"
+                }); 
+            }
+        }
+        const walletTransRes = await WalletTransaction.create({walletid:response._id,amount:amount});
+        if(walletTransRes){
+            return res.status(402).json({
+                success:false,
+                message:"Error occured while creating wallettransaction"
+            }); 
+        }
 
         res.status(200).json({
             success:true,

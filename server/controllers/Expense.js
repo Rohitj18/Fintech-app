@@ -68,6 +68,12 @@ exports.getallexpense = async(req,res)=>{
             });
         }
         const response = await ExpenseTable.findOne({userId:userId}).populate("allExpense").exec();
+        if(!response){
+            return res.status(403).json({
+                success:false,
+                message:"No expense table found",
+            });
+        }
         res.status(200).json({
             success:true,
             data:response,

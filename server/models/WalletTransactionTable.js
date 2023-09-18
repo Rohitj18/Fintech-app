@@ -5,7 +5,7 @@ const WalletTransactionTableSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Wallet"
     },
-    allstocks:{
+    allWalletTrans:{
         type:[mongoose.Schema.Types.ObjectId],
         ref:"WalletTransaction"
     }
