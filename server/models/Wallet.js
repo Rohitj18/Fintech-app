@@ -19,7 +19,7 @@ const WalletSchema = new mongoose.Schema({
     },
     carddetails:{
         type:Number,
-        default:null
+        default:""
     },
     stocks:{
         type:mongoose.Schema.Types.ObjectId,

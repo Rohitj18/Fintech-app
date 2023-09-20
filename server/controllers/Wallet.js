@@ -1,8 +1,8 @@
 const Wallet= require('../models/Wallet');
 const User = require('../models/User');
 const WalletTransaction = require('../models/WalletTransaction');
-const walletTransactionTable = require('../models/WalletTransactionTable');
 const WalletTransactionTable = require('../models/WalletTransactionTable');
+
 
 exports.AddMoney = async(req,res)=>{
     try {
@@ -21,41 +21,30 @@ exports.AddMoney = async(req,res)=>{
         }
         const user = await User.findOne({email});
         console.log(user);
-        const isWallet = await Wallet.findOne({userId:user._id});
-        if(!isWallet){
-            const walletCreationResponse = await Wallet.create({userId:user._id,carddetails:carddetails});
-            if(!walletCreationResponse){
-                return res.status(402).json({
-                    success:false,
-                    message:"Error occured while creating wallet"
-                }); 
-            }
-        }
-        const response = await Wallet.findOneAndUpdate({userId :user._id}, {$inc : {currentbalance : Number(amount)}}).exec();
+        
+        const response = await Wallet.findOneAndUpdate({userId:user._id}, {$inc : {currentbalance : Number(amount)}}).exec();
         if(!response){
             return res.status(402).json({
                 success:false,
                 message:"Error occured while adding money",
             }); 
         }
-        const isWalletTransTable = await WalletTransaction.findOne({walletid:response._id});
-        if(!isWalletTransTable){
-            isWalletTransTable = await WalletTransactionTable.create({walletid:response._id});
-            if(!isWalletTransTable){
-                return res.status(402).json({
-                    success:false,
-                    message:"Error occured while creating wallettranstable"
-                }); 
-            }
-        }
-        const walletTransRes = await WalletTransaction.create({walletid:response._id,amount:amount});
-        if(walletTransRes){
+        const walletId = await Wallet.findOne({_id:user.walletId});
+        console.log(walletId);
+        const walletTransRes = await WalletTransaction.create({walletid:walletId._id,amount:Number(amount)});
+        if(!walletTransRes){
             return res.status(402).json({
                 success:false,
                 message:"Error occured while creating wallettransaction"
             }); 
         }
-
+        const walletTransupdate = await WalletTransactionTable.findOneAndUpdate({walletid:walletId._id},{$push:{allWalletTrans:walletTransRes._id}});
+        if(!walletTransupdate){
+            return res.status(402).json({
+                success:false,
+                message:"Error occured while updating wallet trans table"
+            }); 
+        }
         res.status(200).json({
             success:true,
             data:response,

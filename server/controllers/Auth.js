@@ -1,5 +1,9 @@
 const User = require('../models/User');
 const bycrpt = require('bcrypt');
+const Wallet= require('../models/Wallet');
+const WalletTransactionTable = require('../models/WalletTransactionTable');
+const StockTable = require('../models/StockTable')
+const TransactionTable= require('../models/TransactionTable');
 
 exports.signUp = async(req,res)=>{
     try {
@@ -31,7 +35,54 @@ exports.signUp = async(req,res)=>{
                 message:"Could not create account",
             });
         }
+        const CurrUser = await User.findOne({email:email});
+        const walletCreationResponse = await Wallet.create({userId:CurrUser._id});
+        console.log(walletCreationResponse);
+        if(!walletCreationResponse){
+            return res.status(402).json({
+                success:false,
+                message:"Error occured while creating wallet"
+            }); 
+        }
 
+        const updateUser = await User.findOneAndUpdate({_id:CurrUser._id},{walletId:walletCreationResponse._id});
+        console.log(updateUser);
+        if(!updateUser){
+            return res.status(402).json({
+                success:false,
+                message:"Error while updating wallet"
+            });
+        }
+        const walletTransTableCreation = await WalletTransactionTable.create({walletid:walletCreationResponse._id});
+        console.log(walletTransTableCreation);
+        if(!walletTransTableCreation){
+            
+            return res.status(402).json({
+                success:false,
+                message:"Error occured while creating wallettranstable"
+            }); 
+        }
+        const createStockTableRes = await StockTable.create({walletid:walletCreationResponse._id});
+        if(!createStockTableRes){
+            res.status(403).json({
+                success:false,
+                message:"Error while creating table",
+            });
+        }
+        const createtableresponse = await TransactionTable.create({walletid:walletCreationResponse._id});
+        if(!createtableresponse){
+            return res.status(403).json({
+                success:false,
+                message:"Error while creating table"
+            });
+        }
+        const updateWallet = await Wallet.findOneAndUpdate({_id:walletCreationResponse._id},{transactionhistroy:createtableresponse._id,wallettransactionhistory:walletTransTableCreation._id,stocks:createStockTableRes._id});
+        if(!updateWallet){
+            return res.status(403).json({
+                success:false,
+                message:"Error while updating wallet",
+            });
+        }
         res.status(200).json({
             success:true,
             data:response,

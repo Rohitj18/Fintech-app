@@ -1,5 +1,5 @@
-const Wallet = require('../models/Wallet');
-const  TransactionTable= require('../models/TransactionTable');
+const Wallet= require('../models/Wallet');
+const TransactionTable= require('../models/TransactionTable');
 const Transaction = require('../models/Transaction');
 const StockTable = require('../models/StockTable')
 const Stocks = require('../models/Stocks');
@@ -13,24 +13,7 @@ exports.BuyStock = async(req,res)=>{
                 message:"all field required",
             });
         }
-        const stockTable = await StockTable.findOne({walletid:walletId})
-        if(!stockTable){
-            const createStockTableRes = await StockTable.create({walletid:walletId});
-            if(!createStockTableRes){
-                res.status(403).json({
-                    success:false,
-                    message:"Error while creating table",
-                });
-            }
-            let updatewalletres = await Wallet.findOneAndUpdate({_id:walletId},{stocks:createStockTableRes._id});
-            
-            if(!updatewalletres){
-                res.status(403).json({
-                    success:false,
-                    message:"Error while updating wallet",
-                });
-            }
-        }
+        
         const timestamp ={
             time:Date.now(),
             price:1000,
@@ -38,15 +21,20 @@ exports.BuyStock = async(req,res)=>{
         }
         
         const response = await Stocks.create({companyName:companyName,totalqty:totalqty});
-        const timestamppushres = await Stocks.findOneAndUpdate({_id:response._id},{$push:{allstocks:response._id}})
-        console.log("reached till here");
+        const timestamppushres = await Stocks.findOneAndUpdate({_id:response._id},{$push:{timeStamp:timestamp}})
         if(!response){
             return res.status(403).json({
                 success:false,
                 message:"Could not create stock request",
             });
         }
-
+        const updatedresponse = await Wallet.findOneAndUpdate({_id:walletId}, {$inc : {currentbalance : Number(-1000)}}).exec();
+        if(!updatedresponse){
+            return res.status(403).json({
+                success:false,
+                message:"Could not update wallet money",
+            });
+        }
         const stocktableupdateres = await StockTable.findOneAndUpdate({walletid:walletId},{$push:{allstocks:response._id}}); 
         if(!stocktableupdateres){
             return res.status(403).json({
@@ -61,28 +49,8 @@ exports.BuyStock = async(req,res)=>{
                 message:"Could not create transaction",
             });
         }
-        const isTable = await TransactionTable.findOne({walletid:walletId});
-        console.log("Hello ji")
-        let tableresponse = null;
-        if(isTable){
-            tableresponse= await TransactionTable.findOneAndUpdate({walletid:walletId},{$push:{alltransaction:transctionCreation._id}});
-        }else{
-            let createtableresponse = await TransactionTable.create({walletid:walletId});
-            if(!createtableresponse){
-                return res.status(403).json({
-                    success:false,
-                    message:"Error while creating table"
-                });
-            }
-            tableresponse= await TransactionTable.findOneAndUpdate({walletid:walletId},{$push:{alltransaction:transctionCreation._id}});
-            let updatewalletres = await Wallet.findOneAndUpdate({_id:walletId},{transactionhistroy:createtableresponse._id});
-            if(!updatewalletres){
-                res.status(403).json({
-                    success:false,
-                    message:"Error while updating wallet",
-                });
-            }
-        }
+        
+        const tableresponse= await TransactionTable.findOneAndUpdate({walletid:walletId},{$push:{alltransaction:transctionCreation._id}});
         if(!tableresponse){
             return res.status(403).json({
                 success:false,
