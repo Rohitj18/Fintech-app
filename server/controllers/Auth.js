@@ -4,6 +4,9 @@ const Wallet= require('../models/Wallet');
 const WalletTransactionTable = require('../models/WalletTransactionTable');
 const StockTable = require('../models/StockTable')
 const TransactionTable= require('../models/TransactionTable');
+const jwt = require('jsonwebtoken');
+require("dotenv").config({ path: './vars/.env' });
+
 
 exports.signUp = async(req,res)=>{
     try {
@@ -118,42 +121,41 @@ exports.login=async (req,res)=>{
                 message:"user not registered , please signup first",
             });
         }
-        res.status(200).json({
-            success:true,
-            data:user,
-            message:"User logged in successfully",
-        });
-        //generate jwt
-        // if(await bycrpt.compare(password,user.password)){
-        //     const payload = {
-        //         email:user.email,
-        //         id:user._id,
-        //         accountType:user.accountType,
-        //     }
-        //     const token = jwt.sign(payload,process.env.JWT_SECRET,{
-        //         expiresIn:"24h",
-        //     });
-        //     user.token = token;
-        //     user.password = undefined;
+        // res.status(200).json({
+        //     success:true,
+        //     data:user,
+        //     message:"User logged in successfully",
+        // });
+        // generate jwt
+        if(await bycrpt.compare(password,user.password)){
+            const payload = {
+                email:user.email,
+                id:user._id,
+                walletId:user.walletId
+            }
+            const token = jwt.sign(payload,process.env.JWT_SECRET,{
+                expiresIn:"24h",
+            });
+            user.token = token;
             
-        //     //create cookie and send response
-        //     const options = {
-        //         expires: new Date(Date.now() + 3*24*60*60*1000),
-        //         httpOnly:true,
-        //     }
-        //     res.cookie("token",token,options).status(200).json({
-        //         success:true,
-        //         token,
-        //         user,
-        //         message:"logged in succesfully",
-        //     });
+            //create cookie and send response
+            const options = {
+                expires: new Date(Date.now() + 3*24*60*60*1000),
+                httpOnly:true,
+            }
+            res.cookie("token",token,options).status(200).json({
+                success:true,
+                token,
+                user,
+                message:"logged in succesfully",
+            });
 
-        // }else{
-        //     return res.status(401).json({
-        //         success:false,
-        //         message:"Password is incorrect",
-        //     });
-        // }
+        }else{
+            return res.status(401).json({
+                success:false,
+                message:"Password is incorrect",
+            });
+        }
     } catch (error) {
         console.log(error);
         return res.status(500).json({

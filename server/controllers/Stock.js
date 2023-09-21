@@ -65,7 +65,7 @@ exports.BuyStock = async(req,res)=>{
         }); 
 
 
-    } catch (error) {
+    }catch (error) {
         console.log(error);
         console.log(error.message);
         return res.status(400).json({

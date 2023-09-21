@@ -11,7 +11,7 @@ const walletRoutes = require("./routes/Wallet");
 const stockRoutes = require("./routes/Stocks");
 
 const database = require("./config/database");
-// const cors = require("cors");
+const cors = require("cors");
 // const {cloudinaryConnect} = require("./config/cloudinary");
 
 require("dotenv").config({path:"./server/vars/.env"});
@@ -23,12 +23,12 @@ database.connect();
 //middleware
 app.use(express.json());
 app.use(cookieParser());
-// app.use(
-//     cors({
-//         origin:"http://localhost:3000",
-//         credentials:true,
-//     })
-// );
+app.use(
+    cors({
+        origin:"http://localhost:3000",
+        credentials:true,
+    })
+);
 
 app.use(
     fileUpload({
