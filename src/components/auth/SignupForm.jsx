@@ -2,19 +2,21 @@ import React from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from 'react';
 import OTPInputGroup from './OTPInputGroup';
-import { useNavigate } from 'react-router';
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import {signUp} from "../../services/operations/authApi"
+import { setSignupData } from "../../slices/authSlice"
 import CountdownTimer from '../auth/Timer'
 
 const SignupForm = () => {
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const [isOtpForm, setIsOtpForm] = useState(false);
 
 
     const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
         email: "",
         password: "",
         confirmPassword: ""
@@ -22,7 +24,6 @@ const SignupForm = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [accountType, setAccountType] = useState("student");
 
     function changeHandler(event) {
 
@@ -44,22 +45,24 @@ const SignupForm = () => {
 
         // setIsLoggedIn(true);
 
-        const accountData = {
-            ...formData
-        };
+        // const accountData = {
+        //     ...formData
+        // };
 
-        const finalData = {
-            ...accountData,
-            accountType
-        }
+        // const finalData = {
+        //     ...accountData,
+        //     accountType
+        // }
 
         console.log("printing Final account data ");
-        console.log(finalData)
+        // console.log(finalData)
         setIsOtpForm(!isOtpForm);
     }
 
     function otphandler(event){
         event.preventDefault();
+        dispatch(setSignupData(formData))
+        dispatch(signUp(formData.email,formData.password,formData.confirmPassword,navigate));
         navigate("/login");
     }
     return (

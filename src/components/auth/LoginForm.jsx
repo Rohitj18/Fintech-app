@@ -2,12 +2,13 @@ import React from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from 'react';
 import { NavLink,useNavigate} from 'react-router-dom'
+import { useDispatch } from "react-redux"
 
+import {login} from '../../services/operations/authApi'
 
 const LoginForm = () => {
 
-    // let iconStyles = { color: "white", fontSize: '2.3rem' };
-
+    const dispatch = useDispatch();
     const navigate  = useNavigate();
     const [formData, setFormData] = useState({
         email: "", password: ""
@@ -30,9 +31,9 @@ const LoginForm = () => {
         event.preventDefault();
 
 
-        console.log("Printing the formData ");
-        console.log(formData)
-        navigate('/profile')
+        // console.log("Printing the formData ");
+        // console.log(formData)
+        dispatch(login(formData.email, formData.password, navigate))
         
 
     }

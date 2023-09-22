@@ -10,7 +10,6 @@ const{
 
 //routes for login ,signup and auth
 
-
 router.post("/addMoney",auth,AddMoney);
 router.get("/getwalletdetails",auth,getWalletDetails);
 

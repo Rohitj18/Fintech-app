@@ -11,7 +11,6 @@ const{
 
 //routes for login ,signup and auth
 
-
 router.post("/createExpense",auth,CreateExpense);
 router.get("/getallExpense",auth,getallexpense);
 router.delete("/deleteExpense",auth,deleteExpense);
