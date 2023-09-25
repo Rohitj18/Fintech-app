@@ -8,7 +8,7 @@ const Profile = () => {
 
   let iconStyles = { color: "white", fontSize: '2.3rem' };
   const [formData, setFormData] = useState({
-    firstName: "", lastName: "", address: "", city: "", province: "", code: "", country: "", adhaar: "", pan: "",
+    firstName: "", lastName: "", address: "", city: "", province: "", code: "", country: "", adhaar: "", pan: "",annualIncome:"",personalExpense:"",dateOfBirth:"",contactNumber:"",
   });
 
   function changeHandler(event) {
@@ -303,9 +303,78 @@ const Profile = () => {
                 </label>
               </div>
 
+              {/*  */}
+
+                              <div className="flex flex-row gap-10 w-[100%] mt-[2em]">
+                <label className="w-[100%]">
+                  <p className="text-primary-blue text-3xl font-semibold">
+                    Annual Income<sup className="text-pink-200">*</sup>
+                  </p>
+                  <input
+                    required
+                    type="number"
+                    value={formData.annualIncome}
+                    onChange={changeHandler}
+                    placeholder="Enter amount"
+                    name="aannualIncome"
+                    className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
+                  />
+                </label>
+
+                <label className="w-[100%]">
+                  <p className="text-primary-blue text-3xl font-semibold">
+                    Personal Expense<sup className="text-pink-200">*</sup>
+                  </p>
+                  <input
+                    required
+                    type="number"
+                    value={formData.personalExpense}
+                    onChange={changeHandler}
+                    placeholder="Enter amount"
+                    name="pan"
+                    className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
+                  />
+                </label>
+              </div>
 
 
 
+              <div className="flex flex-row gap-10 w-[100%] mt-[2em]">
+                <label className="w-[100%]">
+                  <p className="text-primary-blue text-3xl font-semibold">
+                    DOB<sup className="text-pink-200">*</sup>
+                  </p>
+                  <input
+                    required
+                    type="date"
+                    value={formData.dateOfBirth}
+                    onChange={changeHandler}
+                   
+                    name="dateOfBirth"
+                    className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
+                  />
+                </label>
+
+                <label className="w-[100%]">
+                  <p className="text-primary-blue text-3xl font-semibold">
+                    Contact Number<sup className="text-pink-200">*</sup>
+                  </p>
+                  <input
+                    required
+                    type="number"
+                    value={formData.contactNumber}
+                    onChange={changeHandler}
+                    placeholder="Enter contact number"
+                    name="contactNumber"
+                    className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
+                  />
+                </label>
+              </div>
+
+
+            
+
+{/*  */}
 
               <div className="mt-[2em]  flex flex-row text-[2em] text-white bg-primary-blue w-[100%] h-[2em] rounded-xl font-semibold ">
                 <button className="w-[100%] h-[100%] flex flex-row justify-center items-center gap-3 ">
