@@ -1,14 +1,19 @@
 import React from "react";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import profilephoto from "../assets/profilephoto.jpg"
 import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import {createAdditonalDetails} from "../services/operations/authApi"
 
 const Profile = () => {
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {token} = useSelector((state)=>state.auth);
   let iconStyles = { color: "white", fontSize: '2.3rem' };
   const [formData, setFormData] = useState({
-    firstName: "", lastName: "", address: "", city: "", province: "", code: "", country: "", adhaar: "", pan: "",annualIncome:"",personalExpense:"",dateOfBirth:"",contactNumber:"",
+    //firstName,lastName,gender,aadharnumber,pannumber,dob,city,zipcode,state,address,annualincome,personalexpense,phoneno,country,image
+    firstName: "", lastName: "",gender:"",aadharnumber: "",pannumber: "",dob:"",city: "",zipcode: "",state: "",address: "",annualincome:"",personalexpense:"",phoneno:"",country: "",image:""
   });
 
   function changeHandler(event) {
@@ -22,9 +27,12 @@ const Profile = () => {
 
   function submitHandler(event) {
     event.preventDefault();
-
     console.log("Printing the formData ");
     console.log(formData);
+    if(formData.image===""){
+      formData.image = `https://api.dicebear.com/5.x/initials/svg?seed=${formData.firstName}%20${formData.lastName}` 
+    }
+    dispatch(createAdditonalDetails(token,formData,navigate));
   }
 
 
@@ -35,12 +43,15 @@ const Profile = () => {
     reader.readAsDataURL(e.target.files[0]);
     reader.onload = () => {
       setImage(reader.result);
+      setFormData((prevData) => ({
+        ...prevData,
+        image: image
+      }));
     };
     reader.onerror = error => {
       return;
     }
   }
-
 
   return (
     <div className=" w-[100vw]  bg-gradient-to-l from-ternary-color from-50% via-secondary-color via-30% to-primary-color to-20% ">
@@ -77,10 +88,9 @@ const Profile = () => {
               <input
                 accept="image/*"
                 type="file"
+                name= "file"
                 onChange={convertToBase64}
                 className="outline-none w-[100%] h-[100%] "
-
-
               />
 
               {/* </button> */}
@@ -141,10 +151,10 @@ const Profile = () => {
                       <input
                         type="radio"
                         onChange={changeHandler}
-                        name="mode"
+                        name="gender"
                         value="Male"
                         id="Male"
-                        checked={formData.mode === "Male"}
+                        checked={formData.gender === "Male"}
                         className="border-b-2 border-primary-blue w-full p-[12px] text-2xl"
                       />
                     </label>
@@ -157,10 +167,10 @@ const Profile = () => {
                       <input
                         type="radio"
                         onChange={changeHandler}
-                        name="mode"
+                        name="gender"
                         value="Female"
                         id="Female"
-                        checked={formData.mode === "Female"}
+                        checked={formData.gender === "Female"}
                       />
                     </label>
 
@@ -171,10 +181,10 @@ const Profile = () => {
                       <input
                         type="radio"
                         onChange={changeHandler}
-                        name="mode"
+                        name="gender"
                         value="other"
                         id="other"
-                        checked={formData.mode === "other"}
+                        checked={formData.gender === "other"}
                         className="border-b-2 border-primary-blue w-full p-[12px] text-2xl"
                       />
                     </label>
@@ -228,10 +238,10 @@ const Profile = () => {
                   <input
                     required
                     type="text"
-                    value={formData.province}
+                    value={formData.state}
                     onChange={changeHandler}
                     placeholder="Enter province"
-                    name="province"
+                    name="state"
                     className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
                   />
                 </label>
@@ -246,10 +256,10 @@ const Profile = () => {
                   <input
                     required
                     type="number"
-                    value={formData.code}
+                    value={formData.zipcode}
                     onChange={changeHandler}
                     placeholder="Enter code"
-                    name="code"
+                    name="zipcode"
                     className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
                   />
                 </label>
@@ -279,10 +289,10 @@ const Profile = () => {
                   <input
                     required
                     type="number"
-                    value={formData.adhaar}
+                    value={formData.aadharnumber}
                     onChange={changeHandler}
                     placeholder="Enter adhaar"
-                    name="adhaar"
+                    name="aadharnumber"
                     className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
                   />
                 </label>
@@ -293,11 +303,11 @@ const Profile = () => {
                   </p>
                   <input
                     required
-                    type="pan"
-                    value={formData.pan}
+                    type="number"
+                    value={formData.pannumber}
                     onChange={changeHandler}
                     placeholder="Enter pan"
-                    name="pan"
+                    name="pannumber"
                     className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
                   />
                 </label>
@@ -313,10 +323,10 @@ const Profile = () => {
                   <input
                     required
                     type="number"
-                    value={formData.annualIncome}
+                    value={formData.annualincome}
                     onChange={changeHandler}
                     placeholder="Enter amount"
-                    name="aannualIncome"
+                    name="annualincome"
                     className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
                   />
                 </label>
@@ -328,10 +338,10 @@ const Profile = () => {
                   <input
                     required
                     type="number"
-                    value={formData.personalExpense}
+                    value={formData.personalexpense}
                     onChange={changeHandler}
                     placeholder="Enter amount"
-                    name="pan"
+                    name="personalexpense"
                     className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
                   />
                 </label>
@@ -347,10 +357,9 @@ const Profile = () => {
                   <input
                     required
                     type="date"
-                    value={formData.dateOfBirth}
+                    value={formData.dob}
                     onChange={changeHandler}
-                   
-                    name="dateOfBirth"
+                    name="dob"
                     className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
                   />
                 </label>
@@ -362,10 +371,10 @@ const Profile = () => {
                   <input
                     required
                     type="number"
-                    value={formData.contactNumber}
+                    value={formData.phoneno}
                     onChange={changeHandler}
                     placeholder="Enter contact number"
-                    name="contactNumber"
+                    name="phoneno"
                     className="outline-none border-b-2 border-primary-blue w-full p-[12px] text-2xl"
                   />
                 </label>

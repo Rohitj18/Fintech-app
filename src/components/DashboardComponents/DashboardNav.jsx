@@ -3,17 +3,18 @@ import {AiOutlineDashboard,AiOutlineCalculator,AiOutlineDollarCircle,AiOutlineSt
 import {RiCurrencyFill} from 'react-icons/ri'
 import {MdDataThresholding} from 'react-icons/md'
 import foxlogo from '../../assets/foxwealthlogo.png'
-
+import { useSelector } from 'react-redux'
 
 const DashboardNav = () => {
     let iconStyles = { color: "white" };
-   
+    const {user}= useSelector((state)=>state.profile);
+    
   return (
     <div className='flex flex-col w-[20%] h-[100%] bg-ternary-color py-12'>
                 {/* profile */}
                 <div className='w-[100%] h-[30%] flex flex-col justify-center items-center gap-3'>
                     <div className='w-[100%] h-[70%] flex justify-center items-center'>
-                        <img src={foxlogo} alt="" className='w-[60%] h-[100%]' />
+                        <img src={user.image} alt="" className='w-[60%] h-[100%]' />
                     </div>
                     <div className='font-semibold text-3xl text-white'>Rohit Jabade</div>
                 </div>

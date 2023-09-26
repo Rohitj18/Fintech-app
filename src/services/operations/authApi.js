@@ -62,6 +62,7 @@ export function signUp(
           : `https://api.dicebear.com/5.x/initials/svg?seed=${"Rohit"} ${"Jabade"}`
         dispatch(setUser({ ...response.data.user, image: userImage }))
         localStorage.setItem("token", JSON.stringify(response.data.token))
+        localStorage.setItem("user",JSON.stringify(response.data.user));
         navigate("/profile");
       } catch (error) {
         console.log("LOGIN API ERROR............", error)
@@ -69,5 +70,54 @@ export function signUp(
       }
       dispatch(setLoading(false))
       toast.dismiss(toastId)
+    }
+  }
+
+  export function createAdditonalDetails(token,formData,navigate) {
+    return async (dispatch) => {
+      const toastId = toast.loading("Loading...")
+      console.log("reached till here");
+      dispatch(setLoading(true))
+      try {
+        const response = await apiConnector("POST", ADDDET_API,
+          formData,
+          {
+            Authorization: `Bearer ${token}`,
+          },
+        )
+  
+        console.log("AdditionalDetails response...", response)
+  
+        if (!response.data.success) {
+          throw new Error(response.data.message)
+        }
+  
+        toast.success("Details Updated Successfully")
+      
+        const userDatajson = localStorage.getItem("user");
+        const userData = await JSON.parse(userDatajson);
+        const imageurl = response.data.url;
+        userData["image"] = imageurl.toString();
+        console.log("This is auth api url",imageurl.toString());
+        dispatch(setUser(userData));
+        localStorage.setItem("user",JSON.stringify(imageurl.toString()));
+        navigate("/dashboard");
+      } catch (error) {
+        console.log("LOGIN API ERROR............", error)
+        toast.error("Login Failed")
+      }
+      dispatch(setLoading(false))
+      toast.dismiss(toastId)
+    }
+  }
+
+  export function logout(navigate) {
+    return (dispatch) => {
+      dispatch(setToken(null))
+      dispatch(setUser(null))
+      localStorage.removeItem("token")
+      localStorage.removeItem("user")
+      toast.success("Logged Out")
+      navigate("/")
     }
   }

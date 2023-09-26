@@ -12,7 +12,7 @@ const stockRoutes = require("./routes/Stocks");
 
 const database = require("./config/database");
 const cors = require("cors");
-// const {cloudinaryConnect} = require("./config/cloudinary");
+const {cloudinaryConnect} = require("./config/cloudinary");
 
 require("dotenv").config({path:"./server/vars/.env"});
 const PORT = process.env.PORT || 4000;
@@ -37,8 +37,8 @@ app.use(
     })
 );
 
-//cloudinary connection
-// cloudinaryConnect();
+// cloudinary connection
+cloudinaryConnect();
 
 //routes
 app.use("/api/v1/auth",userRoutes);

@@ -4,7 +4,7 @@ require('dotenv').config();
 exports.auth = async(req,res,next)=>{
     try{
         //extract token
-        const token = req.cookies.token || req.body.token || req.header("Authorisation").replace("Bearer ","");
+        const token = req.cookies.token || req.body.token || req.header("Authorization").replace("Bearer ","");
         if(!token){
             return res.status(403).json({
                 success:false,
@@ -15,6 +15,7 @@ exports.auth = async(req,res,next)=>{
             const decode = jwt.verify(token,process.env.JWT_SECRET);
             console.log(decode);
             req.user = decode;
+            console.log("This is middler ware data",req.user);
         }catch(error){
             return res.status(401).json({
                 success:false,

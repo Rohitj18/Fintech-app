@@ -11,7 +11,6 @@ import marketlogo from '../assets/DashboardAssests/maketnews.jpeg'
 
 const Dashboard = () => {
     let newData = news.articles;
-
     const [final_width, setFinalWidth] = useState('');
     let monthly_income = 9827
     let total_expense = 8000
@@ -19,8 +18,7 @@ const Dashboard = () => {
     let finalstring = expense_percentage.toString() + '%';
     useEffect(() => {
         setFinalWidth(finalstring);
-    }
-        , []);
+    }, []);
 
 
     return (

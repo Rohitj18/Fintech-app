@@ -21,6 +21,10 @@ const UserSchema = new mongoose.Schema({
     walletId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Wallet",
+    },
+    image:{
+        type:String,
+        default:"",
     }
 
 });

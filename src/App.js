@@ -7,6 +7,7 @@ import OTPform from "./components/auth/OTPform";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Expense from "./pages/Expense";
+import PrivateRoute from "./services/PrivateRoute";
 
 
 
@@ -18,7 +19,7 @@ function App() {
         <Route path="/login" element={<Login/>}/>
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/otp" element={<OTPform/>}/>
-        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/expense" element={<Expense/>}/>
       </Routes>

@@ -1,5 +1,5 @@
 const cloudinary = require("cloudinary").v2; //! Cloudinary is being required
-
+require("dotenv").config({ path: './vars/.env' });
 exports.cloudinaryConnect = () => {
 	try {
 		cloudinary.config({
