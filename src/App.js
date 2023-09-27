@@ -21,7 +21,7 @@ function App() {
         <Route path="/otp" element={<OTPform/>}/>
         <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
         <Route path="/profile" element={<Profile/>}/>
-        <Route path="/expense" element={<Expense/>}/>
+        <Route path="/expense" element={<PrivateRoute><Expense/></PrivateRoute>}/>
       </Routes>
     </div>
   );

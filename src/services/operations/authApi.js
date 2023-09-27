@@ -97,10 +97,10 @@ export function signUp(
         const userDatajson = localStorage.getItem("user");
         const userData = await JSON.parse(userDatajson);
         const imageurl = response.data.url;
-        userData["image"] = imageurl.toString();
-        console.log("This is auth api url",imageurl.toString());
-        dispatch(setUser(userData));
-        localStorage.setItem("user",JSON.stringify(imageurl.toString()));
+        userData.image = imageurl.toString();
+        dispatch(setUser({...userData}));
+        console.log("This is the user data in add dets",userData);
+        localStorage.setItem("user",JSON.stringify(userData));
         navigate("/dashboard");
       } catch (error) {
         console.log("LOGIN API ERROR............", error)

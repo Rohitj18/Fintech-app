@@ -1,31 +1,29 @@
 import React from "react";
-import { Datepicker, DatepickerEvent} from "@meinefinsternis/react-horizontal-date-picker";
-import { enUS } from "date-fns/locale";
 import { useState } from "react";
+import Calendar from 'short-react-calendar'
 
 
 
 
 const StripCalender = () => {
-    const [date, setDate] = useState({
-        startValue: Date.now(),
-        endValue: Date.now()+10,
-        rangeDates: [],
-      });
     
-      const handleChange = (d) => {
-        const [startValue, endValue, rangeDates] = d;
-        setDate((prev) => ({ ...prev, endValue, startValue, rangeDates }));
+    
+      
+      const [date,setDate] = useState(new Date());
+      const onChange = (date) =>{
+        setDate(date);
+        console.log(date);
       };
-    
+      
       return (
-        <Datepicker
-          onChange={handleChange}
-          locale={enUS}
-          startValue={date.startValue}
-          endValue={date.endValue}
-          
-        />
+        <div>
+         <Calendar
+                onChange={onChange}
+                value={date}
+                calendarType="US"
+                oneWeekCalendar={true}
+              />
+        </div>
       );
     
 }
