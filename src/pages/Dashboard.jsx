@@ -24,7 +24,9 @@ const Dashboard = () => {
     return (
         <div className='w-[100%] h-screen flex flex-row'>
             {/* dashborad navigator */}
-            <DashboardNav />
+            <div className='h-[100%] w-[20%]'>
+                <DashboardNav />
+            </div>
             {/* dashboard */}
             <div className='w-[80%] h-[100%] flex flex-col'>
                 {/* navbar */}

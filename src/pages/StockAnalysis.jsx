@@ -1,32 +1,49 @@
 import React, { useEffect, useState } from 'react'
-import { AiOutlineSearch, AiOutlinePercentage } from 'react-icons/ai'
+import { AiOutlineSearch } from 'react-icons/ai'
 import { BiBell } from 'react-icons/bi'
 import { GrMailOption } from 'react-icons/gr'
-import { FaArrowTrendUp, FaArrowTrendDown } from 'react-icons/fa6'
 import DashboardNav from '../components/DashboardComponents/DashboardNav'
 import Graph from '../components/DashboardComponents/Graph'
-import visalogo from '../assets/DashboardAssests/visalogo.png'
-import { news } from '../components/DashboardComponents/NewsData'
-import marketlogo from '../assets/DashboardAssests/maketnews.jpeg'
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
+
+import { data } from '../components/LandingPageComponents/Data'
+
 
 const StockAnalysis = () => {
-    let newData = news.articles;
-    const [final_width, setFinalWidth] = useState('');
-    let monthly_income = 9827
-    let total_expense = 8000
-    var expense_percentage = ((total_expense / monthly_income) * 100).toFixed(2);
-    let finalstring = expense_percentage.toString() + '%';
+    const [displayArr, setDisplayArr] = useState([]);
+    const [allStocks, setAllStocks] = useState([]);
+    const [gainerStock, setGainerStock] = useState([]);
+    const [loserStock, setLoserStock] = useState([]);
+    const fetchData = async () => {
+        let gainerArr = data.top_gainers;
+        let loserArr = data.top_losers;
+        let mergeArr = gainerArr.concat(loserArr);
+        mergeArr.sort(() => Math.random() - 0.5);
+
+        setAllStocks(mergeArr);
+        setGainerStock(gainerArr);
+        setLoserStock(loserArr);
+        setDisplayArr(mergeArr);
+    }
+
     useEffect(() => {
-        setFinalWidth(finalstring);
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+
     }, []);
 
 
     return (
         <div className='w-[100%] h-screen flex flex-row'>
             {/* dashborad navigator */}
-            <DashboardNav />
+
+            <div className='h-screen w-[20%]'>
+                <DashboardNav />
+            </div>
             {/* dashboard */}
-            <div className='w-[80%] h-[100%] flex flex-col'>
+            <div className='w-[80%] h-screen flex flex-col'>
                 {/* navbar */}
                 <div className=' flex flex-row justify-between items-center w-[100%] h-[7%] bg-[#eceff5] border-b-2 border-solid border-ternary-color px-12'>
                     {/* search bar */}
@@ -43,100 +60,38 @@ const StockAnalysis = () => {
                     </div>
                 </div>
                 {/* wrapper */}
-                <div className='w-[100%] h-[93%] flex flex-row'>
-                    {/*middle section  */}
-                    <div className='flex flex-col w-[75%] items-center h-[100%] bg-[#eceff5]'>
-                        <div className='w-[90%] h-[20%] items-center flex flex-row justify-between'>
-                            {/* profit card */}
-                            <div className='flex flex-col w-[20%] h-[60%] gap-3 items-center justify-center bg-white rounded-2xl shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]'>
-                                <div className='flex flex-row gap-3 items-center'>
-                                    <p className='text-3xl'>Total Profit</p>
-                                    <FaArrowTrendUp size={20} style={{ color: "green" }} />
-                                </div>
-                                <p className='text-3xl font-bold'>+$35250</p>
-                            </div>
-                            {/* Income card */}
-                            <div className='flex flex-col w-[20%] h-[60%] gap-3 items-center justify-center bg-white rounded-2xl shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]'>
-                                <div className='flex flex-row gap-3 items-center '>
-                                    <p className='text-3xl'>Monthly Income</p>
-                                    <FaArrowTrendUp size={20} style={{ color: "green" }} />
-                                </div>
-                                <p className='text-3xl font-bold'>$9827</p>
-                            </div>
-                            {/* Expense card */}
-                            <div className='flex flex-col w-[20%] h-[60%] gap-3 items-center justify-center bg-white rounded-2xl shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]'>
-                                <div className='flex flex-row gap-3 items-center'>
-                                    <p className='text-3xl'>Total Expense</p>
-                                    <FaArrowTrendDown size={20} style={{ color: "red" }} />
-                                </div>
-                                <p className='text-3xl font-bold'>$5400</p>
-                            </div>
-                            {/* Radial */}
-                            <div className='flex flex-col w-[30%] h-[60%] gap-3 items-center justify-center bg-white rounded-2xl shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]'>
-                                <div className='flex flex-row gap-3 items-center'>
-                                    <p className='text-3xl'>Expense perc.</p>
-                                    <AiOutlinePercentage size={20} />
-                                </div>
-                                <div className='w-[90%] h-[40%] rounded-2xl bg-[#eceff5]'>
-                                    <div className="h-[100%] bg-primary-blue rounded-2xl" style={{ width: `${final_width}` }}></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='w-[90%] h-[40%] bg-white rounded-3xl shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]'>
-                            <Graph />
-                        </div>
-                        <div className='w-[90%] h-[32%] mt-[4%] flex flex-row justify-between'>
-                            <div className='w-[48%] h-[100%] bg-white rounded-3xl shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]'>
+                <div className='w-[100%] h-screen flex flex-row overflow-y-hidden'>
+                    <div className='w-[40%] h-screen flex flex-col shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] '>
+                        <div className='w-[100%] h-[20%] bg-red-400'>
 
-                            </div>
-                            <div className='w-[48%] h-[100%] bg-white rounded-3xl shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]'>
-
-                            </div>
                         </div>
-                    </div>
-                    {/* wallet and news */}
-                    <div className='w-[25%] h-[100%] flex flex-col bg-white rounded-3xl shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px]'>
-                        {/* wallet */}
-                        <div className='w-[100%] h-[30%] flex justify-center items-center'>
-                            <div className='w-[90%] h-[80%]  justify-between p-[2.3em] bg-gradient-to-l from-ternary-color from-50% via-secondary-color via-30% to-primary-color to-20% glass-effect4 rounded-2xl flex flex-col shadow-[rgba(236,_239,_245,_0.1)_0px_0px_16px]'>
-                                <div className='flex flex-col gap-5'>
-                                    <p className='text-white text-3xl'>Account Balance</p>
-                                    <p className='text-white text-4xl'>$3000</p>
-                                </div>
-                                <div className='flex flex-row justify-between items-center'>
-                                    <div className='w-[7rem] h-[4rem]'>
-                                        <img src={visalogo} alt="" className='w-[100%] h-[100%]' />
-                                    </div>
-                                    <p className='text-white text-3xl'>**** 0313</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='w-[80%] h-[0.5%] rounded-full mx-auto bg-primary-blue'></div>
-                        <div className='w-[100%] h-[70%] flex flex-col'>
-                            <div className='w-[100%] h-[10%] flex items-center justify-center border-solid border-black'>
-                                <p className='text-4xl'>Market News</p>
-                            </div>
-                            <div className='w-[100%] h-[90%] gap-5 flex flex-col overflow-y-scroll'>
-                                {
-                                    newData.map((data) => (
-                                        <div className='w-[100%] h-[15%]  flex flex-row shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]'>
-                                            <div className='h-[100%] w-[30%]'>
-                                                <img src={data.urlToImage===null?marketlogo:data.urlToImage} alt="" className='w-[100%] h-[100%]' />
-                                            </div>
-                                            <div className='h-[100%] w-[70%] p-3 overflow-y-hidden'>
-                                                <p className='text-xl font-semibold'><a href={data.url} style={{ textDecoration: 'none' }}>{data.title.substring(0, 100)}</a></p>
-                                            </div>
+                        <div className='w-[100%] h-[80%] overflow-y-scroll'>
+                        {
+                            displayArr.map((item) => (
+                                <div className='bg-white w-[100%] h-[10%] border-y-2 border-solid px-7 border-[#EEEEEE] flex flex-row items-center justify-between transition-all duration-75 ease-in-out hover:bg-[#EEEEEE]'>
+                                    <p className='font-semibold text-3xl'>{item.ticker}</p>
+                                    <div className='flex flex-row text-2xl gap-4'>
+                                        <p>{item.price}</p>
+                                        <div className='flex flex-row items-center'>
+                                            <IoIosArrowUp />
+                                            <p>{item.change_amount}</p>
                                         </div>
-                                    ))
-                                }
-                            </div>
+                                        <p>{item.change_percentage}</p>
+                                    </div>
+                                </div>
+                            ))
+                        }
                         </div>
                     </div>
+                    <div className='w-[60%] h-[100%] bg-[#eceff5]'></div>
                 </div>
             </div>
         </div>
     )
 }
 
-export default StockAnalysis
 
+
+
+
+export default StockAnalysis

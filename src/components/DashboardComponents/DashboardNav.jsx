@@ -16,7 +16,7 @@ const DashboardNav = () => {
     
     console.log(tabSelector);
   return (
-    <div className='flex flex-col w-[20%] h-[100%] bg-ternary-color py-12'>
+    <div className='flex flex-col w-[100%] h-[100%] bg-ternary-color py-12'>
                 {/* profile */}
                 <div className='w-[100%] h-[30%] flex flex-col justify-center items-center gap-3'>
                     <div className='w-[100%] h-[70%] flex justify-center items-center'>
@@ -44,7 +44,7 @@ const DashboardNav = () => {
                          
 
                     </div>
-                    <div className={`flex flex-row gap-4 w-[100%] h-[10%] px-12 ${tabSelector==="stock-analysis"?" bg-primary-blue bg-opacity-25 border-l-8 border-blue-800":""} transition-all duration-800 ease-in-out hover:bg-primary-blue hover:bg-opacity-25 hover:border-l-8 border-blue-800 justify-start items-center`}>
+                    <div onClick={()=>navigate("/stock-analysis")} className={`flex flex-row gap-4 w-[100%] h-[10%] px-12 ${tabSelector==="stock-analysis"?" bg-primary-blue bg-opacity-25 border-l-8 border-blue-800":""} transition-all duration-800 ease-in-out hover:bg-primary-blue hover:bg-opacity-25 hover:border-l-8 border-blue-800 justify-start items-center`}>
                         <AiOutlineStock size={24} style={iconStyles}/>
                         <p className='text-3xl text-white'>Stock Analysis</p>
                     </div>

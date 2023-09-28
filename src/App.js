@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Expense from "./pages/Expense";
 import PrivateRoute from "./services/PrivateRoute";
+import StockAnalysis from "./pages/StockAnalysis";
 
 
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/expense" element={<PrivateRoute><Expense/></PrivateRoute>}/>
+        <Route path="/stock-analysis" element={<PrivateRoute><StockAnalysis/></PrivateRoute>}/>
       </Routes>
     </div>
   );
