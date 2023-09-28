@@ -11,20 +11,49 @@ import { data } from '../components/LandingPageComponents/Data'
 
 const StockAnalysis = () => {
     const [displayArr, setDisplayArr] = useState([]);
-    const [allStocks, setAllStocks] = useState([]);
-    const [gainerStock, setGainerStock] = useState([]);
-    const [loserStock, setLoserStock] = useState([]);
-    const fetchData = async () => {
-        let gainerArr = data.top_gainers;
-        let loserArr = data.top_losers;
-        let mergeArr = gainerArr.concat(loserArr);
-        mergeArr.sort(() => Math.random() - 0.5);
+    const [allButton,setAllButton] = useState(true);
+    const [gainButton,setGainButton] = useState(false);
+    const [loseButton,setLoseButton] = useState(false);
+    const [gainerArr,setGainerArr] = useState([]);
+    const [loserArr,setLoserArr] = useState([]);
+    const [mergeArr,setMergeArr] = useState([]);
+    
 
-        setAllStocks(mergeArr);
-        setGainerStock(gainerArr);
-        setLoserStock(loserArr);
-        setDisplayArr(mergeArr);
+    const buttonHanlder = (e)=>{
+        
+        const id = e.currentTarget.id;
+        if(id==="1"){
+            setAllButton(true);
+            setGainButton(false);
+            setLoseButton(false);
+            setDisplayArr(mergeArr);
+        }else if(id==="2"){
+            setAllButton(false);
+            setGainButton(true);
+            setLoseButton(false);
+            setDisplayArr(gainerArr);
+        }else if(id==="3"){
+            setAllButton(false);
+            setGainButton(false);
+            setLoseButton(true);
+            setDisplayArr(loserArr);
+        }
+
     }
+    
+    const fetchData = async () => {
+        let newGainerArr = data.top_gainers;
+        let newLoserArr = data.top_losers;
+        let newMergeArr = newGainerArr.concat(newLoserArr);
+        newMergeArr.sort(() => Math.random() - 0.5);
+
+        setDisplayArr(newMergeArr);
+        setGainerArr(newGainerArr);
+        setLoserArr(newLoserArr);
+        setMergeArr(newMergeArr);
+    }
+
+
 
     useEffect(() => {
         fetchData();
@@ -43,7 +72,7 @@ const StockAnalysis = () => {
                 <DashboardNav />
             </div>
             {/* dashboard */}
-            <div className='w-[80%] h-screen flex flex-col'>
+            <div className='w-[80%] h-[100%] flex flex-col'>
                 {/* navbar */}
                 <div className=' flex flex-row justify-between items-center w-[100%] h-[7%] bg-[#eceff5] border-b-2 border-solid border-ternary-color px-12'>
                     {/* search bar */}
@@ -60,23 +89,35 @@ const StockAnalysis = () => {
                     </div>
                 </div>
                 {/* wrapper */}
-                <div className='w-[100%] h-screen flex flex-row overflow-y-hidden'>
+                <div className='w-[100%] h-[93%] flex flex-row overflow-y-hidden'>
                     <div className='w-[40%] h-screen flex flex-col shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] '>
-                        <div className='w-[100%] h-[20%] bg-red-400'>
-
+                        <div className='w-[100%] h-[8%] bg-primary-blue flex flex-row items-center justify-center gap-10'>
+                            <div className={`${allButton?"bg-[#F86F03] text-white":"bg-white text-primary-blue"} text-3xl w-[10%] h-[48%] rounded-xl transition-all duration-100 ease-in-out hover:bg-[#F86F03] hover:text-white`}>
+                                <button id="1" className='w-[100%] h-[100%]' onClick={buttonHanlder}>All</button>
+                            </div>
+                            <div className={`${gainButton?"bg-[#F86F03] text-white":"bg-white text-primary-blue"} text-3xl w-[26%] h-[48%] rounded-xl transition-all duration-100 ease-in-out hover:bg-[#F86F03] hover:text-white`}>
+                                <button id="2" className='w-[100%] h-[100%]' onClick={buttonHanlder}>Top Gainers</button>
+                            </div>
+                            <div className={`${loseButton?"bg-[#F86F03] text-white":"bg-white text-primary-blue"} text-3xl w-[26%] h-[48%] rounded-xl transition-all duration-100 ease-in-out hover:bg-[#F86F03] hover:text-white`}> 
+                                <button id="3" className='w-[100%] h-[100%]' onClick={buttonHanlder}>Top Losers</button>
+                            </div>
                         </div>
-                        <div className='w-[100%] h-[80%] overflow-y-scroll'>
+                        <div className='w-[100%] h-[85%] overflow-y-scroll'>
                         {
                             displayArr.map((item) => (
                                 <div className='bg-white w-[100%] h-[10%] border-y-2 border-solid px-7 border-[#EEEEEE] flex flex-row items-center justify-between transition-all duration-75 ease-in-out hover:bg-[#EEEEEE]'>
-                                    <p className='font-semibold text-3xl'>{item.ticker}</p>
-                                    <div className='flex flex-row text-2xl gap-4'>
-                                        <p>{item.price}</p>
-                                        <div className='flex flex-row items-center'>
-                                            <IoIosArrowUp />
-                                            <p>{item.change_amount}</p>
+                                    <p className={`${item.change_amount<0?"text-red-500":"text-green-500"} font-semibold text-3xl ml-8`}>{item.ticker}</p>
+                                    <div className='flex flex-row text-2xl gap-6 w-[50%] h-[100%] items-center'>
+                                        <div className='bg-[#eceff5] w-[20%] h-[40%] flex justify-center items-center rounded-lg'>
+                                            <p>{Number(item.price).toFixed(2)}</p>
                                         </div>
-                                        <p>{item.change_percentage}</p>
+                                        <div className='flex flex-row items-center justify-center w-[30%] h-[40%] gap-1 bg-[#eceff5] rounded-lg'>
+                                            {item.change_amount<0?(<IoIosArrowDown style={{"color":"red"}}/>):(<IoIosArrowUp style={{"color":"green"}}/>)}
+                                            <p>{item.change_amount<0?"":" "}{Number(item.change_amount).toFixed(3)}</p>
+                                        </div>
+                                        <div className='bg-[#eceff5] w-[30%] h-[40%] flex justify-center items-center rounded-lg'>
+                                            <p>{item.change_amount<0?"":" "}{Number(item.change_percentage.slice(0,-1)).toFixed(2)}%</p>
+                                        </div>
                                     </div>
                                 </div>
                             ))
