@@ -4,48 +4,64 @@ import { StockData } from '../data/datapoints';
 import Graph from '../DashboardComponents/Graph';
 import { AiOutlineDollarCircle } from 'react-icons/ai'
 import { MdOutlineSell } from 'react-icons/md'
+import Spinner from '../Common/Spinner';
 const StockInfo = () => {
   const [oneYearbtn, setOneYearBtn] = useState(true);
   const [threeYearbtn, setThreeYearBtn] = useState(false);
   const [fiveYearbtn, setFiveYearBtn] = useState(false);
+  const [load, setLoad] = useState(true);
   const [graphArr, setGraphArr] = useState([]);
   const [pageData, setPageData] = useState({});
-  const buttonHanlder = (e) => {
+  const buttonHanlder = async (e) => {
 
     const id = e.currentTarget.id;
+    setLoad(true);
     if (id === "1") {
       setOneYearBtn(true);
       setThreeYearBtn(false);
       setFiveYearBtn(false);
+      fetchData(1);
+      
     } else if (id === "2") {
+      
       setOneYearBtn(false);
       setThreeYearBtn(true);
       setFiveYearBtn(false);
+      fetchData(3);
+
     } else if (id === "3") {
+     
       setOneYearBtn(false);
       setThreeYearBtn(false);
       setFiveYearBtn(true);
+      fetchData(5);
     }
-
+    setLoad(false);
   }
 
-  const fetchData = async () => {
+
+  const fetchData = async (yrs = 1) => {
     const year_keys = Object.keys(StockData['Time Series (Daily)']);
     let arr = [];
-    let count = 0;
+    const date = new Date();
+    const condition = date.getFullYear() - yrs;
     setPageData(StockData['Time Series (Daily)'][year_keys[0]]);
-    year_keys.forEach((key) => {
-      if (key.substring(0, 4) === "2022" && count % 2 === 0) {
-        arr.push(StockData["Time Series (Daily)"][key]["2. high"]);
+    let i = 0;
+    while (i < year_keys.length) {
+      if (Number(year_keys[i].substring(0, 4)) < condition) {
+        break;
       }
-      count = count + 1;
-    });
-    console.log();
+      if(i%15===0){
+        arr.push(StockData["Time Series (Daily)"][year_keys[i]]["2. high"]);
+      }
+      i++;
+    }
     setGraphArr(arr);
   }
 
   useEffect(() => {
     fetchData();
+    setLoad(false);
   }, []);
 
   return (
@@ -60,8 +76,9 @@ const StockInfo = () => {
         <div className='w-[10%] h-[50%]'><button id="2" className={`${threeYearbtn ? "bg-primary-blue text-white" : "bg-white text-black"} transition-all duration-100 ease-in-out hover:bg-primary-blue hover:text-white w-[100%] h-[100%] flex justify-center items-center rounded-lg text-xl`} onClick={buttonHanlder}>3 Year</button></div>
         <div className='w-[10%] h-[50%]'><button id="3" className={`${fiveYearbtn ? "bg-primary-blue text-white" : "bg-white text-black"}  transition-all duration-100 ease-in-out hover:bg-primary-blue hover:text-white w-[100%] h-[100%] flex justify-center items-center rounded-lg text-xl`} onClick={buttonHanlder}>5 Year</button></div>
       </div>
-      <div className='w-[100%] h-[43%]'>
-        <Graph dataArr={graphArr} />
+      <div className='w-[100%] h-[43%] flex justify-center items-center relative'>
+        <div className={`${load?"visible":"invisible"} w-[100%] h-[100%] absolute z-10 flex justify-center items-center`}><Spinner/></div>
+        <div className={`${load?"invisible":""} w-[100%] h-[100%]`}><Graph dataArr={graphArr} /></div>
       </div>
       <div className='w-[100%] h-[39%] bg-white flex flex-col'>
         <div className='flex w-[100%] h-[25%] border-b-2  justify-center items-center gap-10'>
@@ -76,7 +93,7 @@ const StockInfo = () => {
         </div>
         <div className='flex w-[100%] h-[75%]'>
           <div className='flex flex-col w-[50%] h-[100%] px-10 border-r-2'>
-          <div className='w-[100%] h-[24.75%] flex justify-center items-center gap-[30%]'>
+            <div className='w-[100%] h-[24.75%] flex justify-center items-center gap-[30%]'>
               <div className='w-[30%]'><p className='text-3xl w-[100%] h-[100%]'>Open</p></div>
               <div className='w-[30%] h-[60%] bg-[#eceff5] flex justify-center items-center text-2xl rounded-lg'>
                 {Number(pageData["1. open"]).toFixed(2)} ₹
@@ -101,9 +118,9 @@ const StockInfo = () => {
               </div>
             </div>
           </div>
-          
+
           <div className='flex flex-col w-[50%] h-[100%] px-10'>
-          <div className='w-[100%] h-[24.75%] flex justify-center items-center gap-[10%]'>
+            <div className='w-[100%] h-[24.75%] flex justify-center items-center gap-[10%]'>
               <div className='w-[50%]'><p className='text-3xl w-[100%] h-[100%]'>Adjusted Close</p></div>
               <div className='w-[30%] h-[60%] bg-[#eceff5] flex justify-center items-center text-2xl rounded-lg'>
                 {Number(pageData["5. adjusted close"]).toFixed(2)} ₹
@@ -112,7 +129,7 @@ const StockInfo = () => {
             <div className='w-[100%] h-[24.75%] flex justify-center items-center gap-[30%]'>
               <div className='w-[30%]'><p className='text-3xl w-[100%] h-[100%]'>Volume</p></div>
               <div className='w-[30%] h-[60%] bg-[#eceff5] flex justify-center items-center text-2xl rounded-lg'>
-                {parseInt(Number(pageData["6. volume"])/100,10)}K
+                {parseInt(Number(pageData["6. volume"]) / 100, 10)}K
               </div>
             </div>
             <div className='w-[100%] h-[24.75%] flex justify-center items-center gap-[10%]'>
@@ -127,7 +144,7 @@ const StockInfo = () => {
                 {Number(pageData["8. split coefficient"]).toFixed(2)} ₹
               </div>
             </div>
-            
+
           </div>
         </div>
       </div>
