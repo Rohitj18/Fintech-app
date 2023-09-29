@@ -1,7 +1,7 @@
 import React from "react";
 import Chart from 'react-apexcharts'
 
-const Graph = () => {
+const Graph = ({ dataArr }) => {
   return (
     <React.Fragment>
       <Chart
@@ -9,20 +9,31 @@ const Graph = () => {
         width={"100%"}
         height={"100%"}
         series={
-            [
-                {
-                   
-                    data:[345,27,121,678,98,321]
-                }
-            ]
+          [
+            {
+              data: dataArr
+            }
+          ]
         }
         options={{
-            title:{
-                text:"Spendings",
-                style:{fontSize:28}
-            },
+
+          title: {
+            text: "Spendings",
+            style: { fontSize: 28 },
+
+          },
+          markers: {
+            size: 0,
+            style: 'hollow',
+          },
+          dataLabels: {
+            enabled: false
+          },
+          xaxis:{
+            tickAmount:6
+          }
         }}
-        
+
       >
 
       </Chart>

@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom'
 const DashboardNav = () => {
     let iconStyles = { color: "white" };
     const {user}= useSelector((state)=>state.profile) || localStorage.getItem("user");
-    console.log("This is your user in dash",user);
     const currLocation = useLocation();
     const tabSelector = currLocation.pathname.split('/').at(-1);
     const navigate = useNavigate();
