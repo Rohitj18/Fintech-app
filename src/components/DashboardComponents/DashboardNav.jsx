@@ -2,6 +2,7 @@ import React from 'react'
 import {AiOutlineDashboard,AiOutlineCalculator,AiOutlineDollarCircle,AiOutlineStock} from 'react-icons/ai'
 import {RiCurrencyFill} from 'react-icons/ri'
 import {MdDataThresholding} from 'react-icons/md'
+import {BiLogOut} from 'react-icons/bi'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
@@ -50,6 +51,10 @@ const DashboardNav = () => {
                     <div className={`flex flex-row gap-4 w-[100%] h-[10%] px-12 ${tabSelector==="deep-analysis"?" bg-primary-blue bg-opacity-25 border-l-8 border-blue-800":""} transition-all duration-800 ease-in-out hover:bg-primary-blue hover:bg-opacity-25 hover:border-l-8 border-blue-800 justify-start items-center`}>
                         <MdDataThresholding size={24} style={iconStyles}/>
                         <p className='text-3xl text-white'>Deep Analysis</p>
+                    </div>
+                    <div onClick={()=>navigate("/")} className={`flex flex-row gap-4 w-[100%] h-[10%] px-12 ${tabSelector==="deep-analysis"?" bg-primary-blue bg-opacity-25 border-l-8 border-blue-800":""} transition-all duration-800 ease-in-out hover:bg-primary-blue hover:bg-opacity-25 hover:border-l-8 border-blue-800 justify-start items-center`}>
+                        <BiLogOut size={24} style={iconStyles}/>
+                        <p className='text-3xl text-white'>Logout</p>
                     </div>
                 </div>
             </div>

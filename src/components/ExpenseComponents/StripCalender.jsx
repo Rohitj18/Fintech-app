@@ -16,8 +16,9 @@ const StripCalender = () => {
       };
       
       return (
-        <div>
+        <div className=" flex justify-center items-center mt-[2em] w-[100%] h-[85%] box-shadow rounded-2xl">
          <Calendar
+             className="w-[100%] text-xl font-bold h-[100%] border-none"
                 onChange={onChange}
                 value={date}
                 calendarType="US"

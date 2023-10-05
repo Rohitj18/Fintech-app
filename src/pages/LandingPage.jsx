@@ -6,6 +6,7 @@ import FourthSection from '../components/LandingPageComponents/FourthSection'
 import Navbar from '../components/LandingPageComponents/Navbar'
 import FifthSection from '../components/LandingPageComponents/FifthSection';
 import RollingBrandTape from '../components/LandingPageComponents/RollingBrandTape';
+import Footer from '../components/LandingPageComponents/Footer';
 
 const LandingPage = () => {
   return (
@@ -17,6 +18,8 @@ const LandingPage = () => {
         <RollingBrandTape/>
         <FourthSection/>
         <FifthSection/>
+        <Footer/>
+
     </div>
   )
 }
