@@ -5,13 +5,15 @@ import Graph from '../DashboardComponents/Graph';
 import { AiOutlineDollarCircle } from 'react-icons/ai'
 import { MdOutlineSell } from 'react-icons/md'
 import Spinner from '../Common/Spinner';
-const StockInfo = () => {
+const StockInfo = ({stockName}) => {
   const [oneYearbtn, setOneYearBtn] = useState(true);
   const [threeYearbtn, setThreeYearBtn] = useState(false);
   const [fiveYearbtn, setFiveYearBtn] = useState(false);
   const [load, setLoad] = useState(true);
   const [graphArr, setGraphArr] = useState([]);
   const [pageData, setPageData] = useState({});
+  const [fullStockData,setFullStockData] = useState({});
+  const [yearkeys,setYearKeys] = useState([]);
   const buttonHanlder = async (e) => {
 
     const id = e.currentTarget.id;
@@ -20,31 +22,50 @@ const StockInfo = () => {
       setOneYearBtn(true);
       setThreeYearBtn(false);
       setFiveYearBtn(false);
-      fetchData(1);
+      fetchYearWiseData(1);
       
     } else if (id === "2") {
       
       setOneYearBtn(false);
       setThreeYearBtn(true);
       setFiveYearBtn(false);
-      fetchData(3);
+      fetchYearWiseData(3);
 
     } else if (id === "3") {
      
       setOneYearBtn(false);
       setThreeYearBtn(false);
       setFiveYearBtn(true);
-      fetchData(5);
+      fetchYearWiseData(5);
     }
     setLoad(false);
   }
 
-
-  const fetchData = async (yrs = 1) => {
+  const fetchYearWiseData=(yrs=1)=>{
+    const date = new Date();
+    const condition = date.getFullYear()-yrs;
+    let arr = [];
+    let i = 0;
+    while (i < yearkeys.length) {
+      if (Number(yearkeys[i].substring(0, 4)) < condition) {
+        break;
+      }
+      if(i%15===0){
+        arr.push(StockData["Time Series (Daily)"][yearkeys[i]]["2. high"]);
+      }
+      i++;
+    }
+    arr.reverse();
+    setGraphArr(arr);
+  }
+  const fetchData = async () => {
+    //const stockData = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${stock}&outputsize=full&apikey=CYUQ1GFIPA075SOW`);
+    setFullStockData(StockData['Time Series (Daily)']);
     const year_keys = Object.keys(StockData['Time Series (Daily)']);
+    setYearKeys(year_keys);
     let arr = [];
     const date = new Date();
-    const condition = date.getFullYear() - yrs;
+    const condition = date.getFullYear() - 1;
     setPageData(StockData['Time Series (Daily)'][year_keys[0]]);
     let i = 0;
     while (i < year_keys.length) {
@@ -56,20 +77,22 @@ const StockInfo = () => {
       }
       i++;
     }
+    arr.reverse();
     setGraphArr(arr);
   }
 
   useEffect(() => {
+    setLoad(true);
     fetchData();
     setLoad(false);
   }, []);
 
   return (
-    <div className='w-[100%] h-[100%] flex flex-col'>
+    <div key={stockName} className='w-[100%] h-[100%] flex flex-col'>
       <div className='w-[100%] h-[8%] bg-white flex flex-row items-center'>
         <div className='w-[1%] h-[100%] bg-primary-blue'>
         </div>
-        <p className='text-5xl font-bold px-5'>COMPANY : IBM</p>
+        <p className='text-5xl font-bold px-5'>COMPANY : {stockName}</p>
       </div>
       <div className='w-[100%] h-[10%]  flex gap-5 items-center pl-5'>
         <div className='w-[10%] h-[50%]'><button id="1" className={`${oneYearbtn ? "bg-primary-blue text-white" : "bg-white text-black"} transition-all duration-100 ease-in-out hover:bg-primary-blue hover:text-white  w-[100%] h-[100%] flex justify-center items-center rounded-lg text-xl`} onClick={buttonHanlder}>1 Year</button></div>
