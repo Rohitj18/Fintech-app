@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import Expense from "./pages/Expense";
 import PrivateRoute from "./services/PrivateRoute";
 import StockAnalysis from "./pages/StockAnalysis";
+import Settings from "./pages/Settings";
 
 
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/expense" element={<PrivateRoute><Expense/></PrivateRoute>}/>
         <Route path="/stock-analysis" element={<PrivateRoute><StockAnalysis/></PrivateRoute>}/>
+        <Route path="/settings/:id" element={<Settings/>}/>
       </Routes>
     </div>
   );

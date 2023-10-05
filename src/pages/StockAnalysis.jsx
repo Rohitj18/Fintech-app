@@ -3,11 +3,11 @@ import { AiOutlineSearch } from 'react-icons/ai'
 import { BiBell } from 'react-icons/bi'
 import { GrMailOption } from 'react-icons/gr'
 import DashboardNav from '../components/DashboardComponents/DashboardNav'
-import Graph from '../components/DashboardComponents/Graph'
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
 import StockInfo from '../components/stockAnalysisComponents/StockInfo'
 import { data } from '../components/LandingPageComponents/Data'
 import { StockData } from '../components/data/datapoints'
+import { current } from '@reduxjs/toolkit'
 
 const StockAnalysis = () => {
     const [displayArr, setDisplayArr] = useState([]);
@@ -17,7 +17,7 @@ const StockAnalysis = () => {
     const [gainerArr, setGainerArr] = useState([]);
     const [loserArr, setLoserArr] = useState([]);
     const [mergeArr, setMergeArr] = useState([]);
-
+    const [clickedStock,setClickedStock] = useState("");
     const buttonHanlder = (e) => {
 
         const id = e.currentTarget.id;
@@ -40,6 +40,11 @@ const StockAnalysis = () => {
 
     }
 
+    const onClickHandler=(e)=>{
+        const currStockName = e.currentTarget.id;
+        setClickedStock(currStockName)
+    }
+
     
 
     const fetchData = async () => {
@@ -48,6 +53,7 @@ const StockAnalysis = () => {
         let newMergeArr = newGainerArr.concat(newLoserArr);
         newMergeArr.sort(() => Math.random() - 0.5);
 
+        setClickedStock(newMergeArr[0].ticker);
         setDisplayArr(newMergeArr);
         setGainerArr(newGainerArr);
         setLoserArr(newLoserArr);
@@ -61,9 +67,7 @@ const StockAnalysis = () => {
         fetchData();
     }, []);
 
-    useEffect(() => {
 
-    }, []);
 
 
     return (
@@ -91,7 +95,7 @@ const StockAnalysis = () => {
                     </div>
                 </div>
                 {/* wrapper */}
-                <div className='w-[100%] h-[93%] flex flex-row overflow-y-hidden'>
+                <div className='w-[100%] h-[93%] flex flex-row overflow-y-hidden md:flex-col lg:flex-col'>
                     <div className='w-[40%] h-screen flex flex-col shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px] '>
                         <div className='w-[100%] h-[8%] bg-white flex flex-row items-center justify-center'>
 
@@ -109,7 +113,7 @@ const StockAnalysis = () => {
                         <div className='w-[100%] h-[85%] overflow-y-scroll'>
                             {
                                 displayArr.map((item) => (
-                                    <div className='bg-white w-[100%] h-[10%] border-y-2 border-solid px-7 border-[#EEEEEE] flex flex-row items-center justify-between transition-all duration-75 ease-in-out hover:bg-[#EEEEEE]'>
+                                    <div id={`${item.ticker}`} onClick={onClickHandler} className={`${clickedStock=== item.ticker?"bg-[#EEEEEE]":""} bg-white w-[100%] h-[10%] border-y-2 border-solid px-7 border-[#EEEEEE] flex flex-row items-center justify-between transition-all duration-75 ease-in-out hover:bg-[#EEEEEE]`}>
                                         <p className={`${item.change_amount < 0 ? "text-red-500" : "text-green-500"} font-semibold text-3xl ml-8`}>{item.ticker}</p>
                                         <div className='flex flex-row text-2xl gap-6 w-[50%] h-[100%] items-center'>
                                             <div className='bg-[#eceff5] w-[20%] h-[40%] flex justify-center items-center rounded-lg'>
@@ -128,8 +132,8 @@ const StockAnalysis = () => {
                             }
                         </div>
                     </div>
-                    <div className='w-[60%] h-[100%] bg-[#eceff5]'>
-                        <StockInfo />
+                    <div key={clickedStock} className='w-[60%] h-[100%] bg-[#eceff5]'>
+                        <StockInfo stockName={clickedStock}/>
                     </div>
                 </div>
             </div>
