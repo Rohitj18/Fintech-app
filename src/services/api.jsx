@@ -14,10 +14,16 @@ export const stockEndPoints = {
 export const expenseEndPoints={
     CREATEEXPENSE_API:BASE_URL+"/createExpense",
     GETALLEXPENSE_API:BASE_URL+"/getallExpense",
-    DELETEEXPENSE_API:BASE_URL+"/deleteExpense"
+    DELETEEXPENSE_API:BASE_URL+"/deleteExpense",
+    GETDATEEXPENSE_API:BASE_URL+"/getDateExpense",
 }
 
 export const walletEndPoints={  
    ADDMONEY_API :BASE_URL+"/addMoney",
    GETWALLETDETS_API:BASE_URL+"/getwalletdetails"
+}
+
+export const yahooEndPoints = {
+    GET_GAINER_LOSER_API: BASE_URL+"/getGainer&LoserApi",
+    GET_STOCK_DATA: BASE_URL + "getApi"
 }

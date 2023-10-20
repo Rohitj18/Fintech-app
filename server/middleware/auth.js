@@ -13,9 +13,9 @@ exports.auth = async(req,res,next)=>{
         }
         try{
             const decode = jwt.verify(token,process.env.JWT_SECRET);
-            console.log(decode);
+            // console.log(decode);
             req.user = decode;
-            console.log("This is middler ware data",req.user);
+            // console.log("This is middler ware data",req);
         }catch(error){
             return res.status(401).json({
                 success:false,

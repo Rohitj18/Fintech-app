@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DashboardNav from '../components/DashboardComponents/DashboardNav'
 import { AiOutlineSearch} from 'react-icons/ai'
 import { BiBell } from 'react-icons/bi'
@@ -9,8 +9,10 @@ import { GiReceiveMoney } from 'react-icons/gi'
 import StripCalender from '../components/ExpenseComponents/StripCalender'
 import Main from '../components/ExpenseComponents/ExpensesList/Main'
 
-const expense = () => {
+const Expense = () => {
     let iconStyles = { color: "black", fontSize: '2.3rem' };
+    const [mainDate,setMainDate] = useState(new Date());
+    console.log("this is main data in pages",mainDate);
   return (
    
     <div className='w-[100%] h-screen flex flex-row overflow-y-hidden'>
@@ -80,11 +82,11 @@ const expense = () => {
 
 
                 <div className=' w-[95%] flex mx-auto'>
-                    <StripCalender/>
+                    <StripCalender mainDate={mainDate} setMainDate={setMainDate}/>
                 </div>
 
                 <div className='w-[100%] h-[55%]'>
-                    <Main/>
+                    <Main key={mainDate} mainDate={mainDate} setMainDate={setMainDate}/>
                 </div>
               
 
@@ -136,4 +138,4 @@ const expense = () => {
   )
 }
 
-export default expense
+export default Expense

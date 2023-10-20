@@ -6,8 +6,8 @@ const ExpenseSchema = new mongoose.Schema({
         required:true,
     },
     timeStamp:{
-        type:Date,
-        default:Date.now()
+        type:String,
+        // default:Date.now()
     },
     amount:{
         type:Number,

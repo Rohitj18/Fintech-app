@@ -17,7 +17,7 @@ const Filter = (props) => {
   }
 
   return (
-    <div className="w-[100%] flex flex-wrap  space-x-4 gap-y-4 mx-auto py-4 justify-center">
+    <div className="w-[100%] flex flex-wrap  space-x-6 gap-y-4 mx-auto py-4 justify-center">
       {filterData.map((data) => (
         <button
           className={`text-3xl px-2 py-1 rounded-md font-semibold box-shadow

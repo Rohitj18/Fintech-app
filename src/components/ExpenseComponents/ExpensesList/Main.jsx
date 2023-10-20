@@ -5,9 +5,15 @@ import Filter from "./Filter";
 import { apiUrl, filterData } from "./data";
 import { useState, useEffect } from "react";
 import Spinner from "./Spinner";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
+import { useDispatch } from "react-redux";
+import {createExpense,getDateExpenes} from '../../../services/operations/expenseApi'
+import { useSelector } from "react-redux";
+// import { toast } from "react-toastify";
 
-const Main = () => {
+const Main = ({mainDate}) => {
+  const dispatch = useDispatch();
+  const {token} = useSelector((state)=>state.auth);
   const [courses, setCourses] = useState(null);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState(filterData[0].title);
@@ -30,20 +36,23 @@ const Main = () => {
 
     console.log("Finally printing the entireform ka data ........");
     console.log(formData);
-
+    let timeStamp = mainDate;
+    dispatch(createExpense(token,formData.category,formData.amount,formData.name,formData.desc,timeStamp));
     setExpensesArr([...expensesArr, formData]);
     setFormData({ amount: "", name: "",category:"",desc:"" });
-
     setModal(false);
   }
 
   async function fetchData() {
     setLoading(true);
     try {
-      let response = await fetch(apiUrl);
-      let output = await response.json();
-      ///output ->
-      setCourses(output.data);
+      
+      let date = mainDate;
+      console.log("This is main date",mainDate);
+      let currDateExpense = await dispatch(getDateExpenes(token,date));
+      setExpensesArr([]);
+      setExpensesArr(currDateExpense.data?.data);
+      console.log("This is the backend cum",currDateExpense.data?.data);
     } catch (error) {
       toast.error("Network me koi dikkat hai");
     }
@@ -52,7 +61,8 @@ const Main = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+    console.log("main chal gaya");
+  }, [mainDate]);
 
   return (
     <div className=" flex flex-col bg-bgDark2 w-[100%] h-[100%] relative  ">
@@ -77,10 +87,11 @@ const Main = () => {
               <Spinner />
             ) : (
               // courses={courses} category={category}
-              <Cards
+              (expensesArr.length<= 0 ?(<div className="flex justify-center item-center text-black text-5xl">No Expenses Today</div>):(<Cards
                 expensesArr={expensesArr}
                 setExpensesArr={setExpensesArr}
-              />
+              />))
+              
             )}
           </div>
         </div>
@@ -103,7 +114,7 @@ const Main = () => {
 
               <label className="w-[100%]">
                 <p className="text-primary-blue text-3xl font-semibold">
-                  Email Item<sup className="text-pink-200">*</sup>
+                  Item<sup className="text-pink-200">*</sup>
                 </p>
 
                 <input
@@ -119,7 +130,7 @@ const Main = () => {
 
               <label className="w-[100%]">
                 <p className="text-primary-blue text-3xl font-semibold">
-                  Email Item<sup className="text-pink-200">*</sup>
+                  Price<sup className="text-pink-200">*</sup>
                 </p>
                 <input
                   type="number"

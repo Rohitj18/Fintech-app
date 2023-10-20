@@ -9,6 +9,7 @@ const userRoutes = require("./routes/User");
 const expenseRoutes = require("./routes/Expense");
 const walletRoutes = require("./routes/Wallet");
 const stockRoutes = require("./routes/Stocks");
+// const ApiRoutes = require("./routes/API");
 
 const database = require("./config/database");
 const cors = require("cors");
@@ -45,6 +46,7 @@ app.use("/api/v1/auth",userRoutes);
 app.use("/api/v1/auth",expenseRoutes);
 app.use("/api/v1/auth",walletRoutes);
 app.use("/api/v1/auth",stockRoutes);
+
 //get routes
 
 app.get("/",(req,res)=>{

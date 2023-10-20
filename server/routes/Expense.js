@@ -6,7 +6,8 @@ const {auth} = require("../middleware/auth");
 const{
     CreateExpense,
     getallexpense,
-    deleteExpense 
+    deleteExpense,
+    getDateExpense 
 } = require("../controllers/Expense");
 
 //routes for login ,signup and auth
@@ -14,6 +15,7 @@ const{
 router.post("/createExpense",auth,CreateExpense);
 router.get("/getallExpense",auth,getallexpense);
 router.delete("/deleteExpense",auth,deleteExpense);
+router.get("/getDateExpense",auth,getDateExpense);
 
 
 module.exports=router;

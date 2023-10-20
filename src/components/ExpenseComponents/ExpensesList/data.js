@@ -5,19 +5,19 @@ export const filterData = [
     },
     {
       id: "2",
-      title: "Development",
+      title: "Food",
     },
     {
       id: "3",
-      title: "Business",
+      title: "Travel",
     },
     {
       id: "4",
-      title: "Design",
+      title: "Health",
     },
     {
       id: "5",
-      title: "Lifestyle",
+      title: "Grocery",
     },
  
   ];
