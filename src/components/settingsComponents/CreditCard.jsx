@@ -1,83 +1,80 @@
 
 
-import React from "react";
-import Cards from "react-credit-cards-2";
-import "react-credit-cards-2/dist/es/styles-compiled.css";
-import styles from "./CreditCard.module.css";
+import React, { useState } from 'react';
+import Cards from 'react-credit-cards-2';
+import 'react-credit-cards-2/dist/es/styles-compiled.css';
 
 function CreditCard() {
-  const data = {
-    cvc: "",
-    expiry: "",
-    focus: "",
-    name: "",
-    number: "",
-  };
+  const [state, setState] = useState({
+    number: '',
+    expiry: '',
+    cvc: '',
+    name: '',
+    focus: '',
+  });
 
-  const [cardDetails, setCardDetails] = React.useState(data);
+  const handleInputChange = (evt) => {
+    const { name, value } = evt.target;
 
-  const handleInputFocus = (e) => {
-    setCardDetails({ ...cardDetails, focus: e.target.name });
-  };
+    setState((prev) => ({ ...prev, [name]: value }));
+  }
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCardDetails({ ...cardDetails, [name]: value });
-  };
+  const handleInputFocus = (evt) => {
+    setState((prev) => ({ ...prev, focus: evt.target.name }));
+  }
 
   return (
-    <div className={`${styles.cardContainer} w-[100%] h-[100%] mx-auto self-center`}>
+    <div className='w-[50%]'>
       <Cards
-        cvc={cardDetails.cvc}
-        expiry={cardDetails.expiry}
-        focused={cardDetails.focus}
-        name={cardDetails.name}
-        number={cardDetails.number}
+        number={state.number}
+        expiry={state.expiry}
+        cvc={state.cvc}
+        name={state.name}
+        focused={state.focus}
       />
-      <div>
-        <form className={styles.cardForm}>
+      <form className='flex flex-col mt-10 gap-10 w-[100%] h-[100%] items-center'>
+        <input
+          type="number"
+          name="number"
+          placeholder="Card Number"
+          value={state.number}
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          className='w-[70%] h-[10%] pl-3 text-black text-2xl'
+        />
+
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={state.name}
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          className='w-[70%] h-[10%] pl-3 text-2xl'
+        />
+        <div className='flex gap-5 w-[70%] h-[10%] text-2xl'>
           <input
             type="number"
-            name="number"
-            placeholder="Card Number"
+            name="expiry"
+            placeholder="Expiry"
+            value={state.expiry}
             onChange={handleInputChange}
             onFocus={handleInputFocus}
-            value={cardDetails.number}
+            className='w-[45%] h-[100%] pl-3'
           />
           <input
-            type="text"
-            name="name"
-            placeholder="Name"
+            type="number"
+            name="cvc"
+            placeholder="CVC"
+            value={state.cvc}
             onChange={handleInputChange}
             onFocus={handleInputFocus}
-            value={cardDetails.name}
+            className='w-[45%] h-[100%] pl-3'
           />
-          <div className={styles.bottom}>
-            <input
-              type="text"
-              name="expiry"
-              placeholder="MM/YY Expiry"
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              value={cardDetails.expiry}
-            />
-            <input
-              type="tel"
-              name="cvc"
-              placeholder="CVC"
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              value={cardDetails.cvc}
-              maxLength={3}
-            />
-          </div>
-          <div className="w-[100%] h-[4rem] bg-primary-blue rounded-lg mt-4">
-            <button type="submit" className="w-[100%] h-[100%] text-3xl text-white">
-                Procced to Pay
-            </button>
-          </div>
-        </form>
-      </div>
+        </div>
+        
+
+      </form>
     </div>
   );
 }

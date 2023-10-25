@@ -1,7 +1,8 @@
 const Expense = require('../models/Expense');
 const User = require('../models/User');
 const ExpenseTable = require('../models/ExpenseTable');
-
+const { GiConsoleController } = require('react-icons/gi');
+const moment = require('moment'); 
 
 
 exports.CreateExpense = async(req,res)=>{
@@ -16,7 +17,6 @@ exports.CreateExpense = async(req,res)=>{
             });
         }
         timeStamp = timeStamp.toString().substring(0,10);
-        console.log(`this is date ${timeStamp} and date type ${typeof(timeStamp)}`)
         const response = await Expense.create({category,timeStamp,amount,name,desc});
         if(!response){
             return res.status(403).json({
@@ -24,21 +24,10 @@ exports.CreateExpense = async(req,res)=>{
                 message:"Could not create Expense , please try again",
             });
         }
-        const isTable = await ExpenseTable.findOne({userId});
-        console.log("Reached here")
+        
         let tableresponse = null;
-        if(isTable){
-            tableresponse= await ExpenseTable.findOneAndUpdate({userId},{$push:{allExpense:response._id}});
-        }else{
-            let createtableresponse = await ExpenseTable.create({userId});
-            if(!createtableresponse){
-                return res.status(403).json({
-                    success:false,
-                    message:"Error while creating table"
-                });
-            }
-            tableresponse= await ExpenseTable.findOneAndUpdate({userId},{$push:{allExpense:response._id}});
-        }
+        tableresponse= await ExpenseTable.findOneAndUpdate({userId},{$push:{allExpense:response._id}});
+        
         if(!tableresponse){
             return res.status(403).json({
                 success:false,
@@ -88,22 +77,7 @@ exports.getDateExpense = async(req,res)=>{
         .catch((err) => {
           console.log('Error:', err);
         });
-        // ExpenseTable.findOne({ userId: userId })
-        // .populate('allExpense') 
-        // .then((expenseTable)=>{
-        //     if (expenseTable) {
-              
-        //         const matchingExpenses = expenseTable.allExpense.filter(expense => {
-        //           return expense.timeStamp === date;
-        //         });
         
-        //         console.log(matchingExpenses);
-        //       } else {
-        //         console.log('ExpenseTable not found.');
-        //     }
-        // }).catch((err)=>{
-        //     console.log(err);
-        // });
       
 
         if(!response){
@@ -112,6 +86,7 @@ exports.getDateExpense = async(req,res)=>{
                 message:"No expense table found",
             });
         }
+        console.log("this is backend res",response);
         res.status(200).json({
             success:true,
             data:response,
@@ -128,6 +103,153 @@ exports.getDateExpense = async(req,res)=>{
     }
 }
 
+
+exports.getCurrentMonthSum = async(req,res)=>{
+    const currentDate = moment();
+    const firstDayOfMonth = currentDate.startOf('month').format('YYYY-MM-DD');
+    const lastDayOfMonth = currentDate.endOf('month').format('YYYY-MM-DD');
+    try {
+        const userId = req.user.id;
+        if(!userId){
+            return res.status(403).json({
+                success:false,
+                message:"all field required",
+            });
+        }
+        const response = await ExpenseTable.findOne({ userId: userId })
+        .populate({
+          path: 'allExpense',
+          match: { timeStamp: {
+            $gte: firstDayOfMonth,
+            $lte: lastDayOfMonth,
+          }, } 
+        })
+        .then((expenseTable) => {
+          if (expenseTable) {
+            return expenseTable.allExpense;
+          } else {
+            console.log('cannot fetch');
+          }
+        })
+        .catch((err) => {
+          console.log('Error:',err);
+      });
+        
+      
+
+        if(!response){
+            return res.status(403).json({
+                success:false,
+                message:"No expense table found",
+            });
+        }
+        let Totalsum = 0;
+        let foodsum = 0;
+        let travelsum =0;
+        let healthsum =0;
+        let grocerySum =0;
+        let Electronicsum = 0;
+        let othersum = 0;
+        response.forEach((item)=>{
+            Totalsum=Totalsum+Number(item?.amount);
+            switch (item?.category) {
+                case "Food":
+                    foodsum=foodsum+item?.amount;
+                    break;
+                case "Travel":
+                    travelsum=travelsum+item?.amount;
+                    break;
+                case "Health":
+                    healthsum=healthsum+item?.amount;
+                    break;
+                case "Grocery":
+                    grocerySum=grocerySum+item?.amount;
+                    break;
+                case "Electronics":
+                    Electronicsum =Electronicsum +item?.amount;
+                    break;
+                case "Other":
+                    othersum =othersum +item?.amount;
+                    break;
+                default:
+                    break;
+            }
+        })
+        
+        let responseData = {
+            Totalsum,
+            foodsum,
+            travelsum,
+            healthsum,
+            grocerySum,
+            Electronicsum,
+            othersum,
+        }
+
+
+        console.log("this is backend res",response);
+        res.status(200).json({
+            success:true,
+            data:responseData,
+            message:"Successfully calculated the total amount",
+        }); 
+
+    } catch (error) {
+        console.log(error);
+        console.log(error.message);
+        return res.status(400).json({
+            success:false,
+            message:"Error while fetching additional details",
+        });
+    }
+}
+
+
+
+exports.getCurrentExpenseArr = async(req,res)=>{
+    const currentDate = moment();
+    const firstDayOfMonth = currentDate.startOf('month').format('YYYY-MM-DD');
+    const lastDayOfMonth = currentDate.endOf('month').format('YYYY-MM-DD');
+    try {
+        const userId = req.user.id;
+        if(!userId){
+            return res.status(403).json({
+                success:false,
+                message:"all field required",
+            });
+        }
+        const response = await ExpenseTable.findOne({ userId: userId })
+        .populate({
+          path: 'allExpense',
+          match: { timeStamp: {
+            $gte: firstDayOfMonth,
+            $lte: lastDayOfMonth,
+          }, } 
+        }).exec();
+
+        if(!response){
+            return res.status(403).json({
+                success:false,
+                message:"No expense table found",
+            });
+        }
+        
+        console.log("this is backend res",response);
+        res.status(200).json({
+            success:true,
+            data:response,
+            message:"Successfully calculated the total amount",
+        }); 
+
+    } catch (error) {
+        console.log(error);
+        console.log(error.message);
+        return res.status(400).json({
+            success:false,
+            message:"Error while fetching additional details",
+        });
+    }
+}
 
 exports.getallexpense = async(req,res)=>{
     try {

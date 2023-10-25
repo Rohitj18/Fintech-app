@@ -11,7 +11,7 @@ import {createExpense,getDateExpenes} from '../../../services/operations/expense
 import { useSelector } from "react-redux";
 // import { toast } from "react-toastify";
 
-const Main = ({mainDate}) => {
+const Main = ({mainDate,setMainDate}) => {
   const dispatch = useDispatch();
   const {token} = useSelector((state)=>state.auth);
   const [courses, setCourses] = useState(null);
@@ -46,22 +46,19 @@ const Main = ({mainDate}) => {
   async function fetchData() {
     setLoading(true);
     try {
-      
       let date = mainDate;
-      console.log("This is main date",mainDate);
       let currDateExpense = await dispatch(getDateExpenes(token,date));
       setExpensesArr([]);
       setExpensesArr(currDateExpense.data?.data);
       console.log("This is the backend cum",currDateExpense.data?.data);
     } catch (error) {
-      toast.error("Network me koi dikkat hai");
+      toast.error("Something went wrong");
     }
     setLoading(false);
   }
 
   useEffect(() => {
     fetchData();
-    console.log("main chal gaya");
   }, [mainDate]);
 
   return (

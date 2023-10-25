@@ -1,24 +1,56 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardNav from '../components/DashboardComponents/DashboardNav'
 import { AiOutlineSearch} from 'react-icons/ai'
 import { BiBell } from 'react-icons/bi'
 import { GrMailOption } from 'react-icons/gr'
-import { GiMoneyStack } from 'react-icons/gi'
+import { GiConsoleController, GiMoneyStack } from 'react-icons/gi'
 import { BiRupee } from 'react-icons/bi'
 import { GiReceiveMoney } from 'react-icons/gi'
 import StripCalender from '../components/ExpenseComponents/StripCalender'
 import Main from '../components/ExpenseComponents/ExpensesList/Main'
+import { useDispatch } from 'react-redux'
+import {getCurrentMonthSum} from '../services/operations/expenseApi'
+import { useSelector } from "react-redux";
+import {getAdditionalDetails} from '../services/operations/authApi'
+import Spinner from '../components/ExpenseComponents/ExpensesList/Spinner'
+
+
 
 const Expense = () => {
+    const dispatch = useDispatch();
     let iconStyles = { color: "black", fontSize: '2.3rem' };
-    const [mainDate,setMainDate] = useState(new Date());
-    console.log("this is main data in pages",mainDate);
+    const {token,userName} = useSelector((state)=>state.auth);
+    const [loading,setLoading] = useState(false);
+    const [budget,setBudget] = useState(0);
+    const [totalExpense,setTotalExpense] = useState(0);
+    const [totalData,setTotalData] = useState(0);
+    var currentDate = new Date();
+    var millisecondsInDay = 1000 * 60 * 60 * 24;
+    var previousDay = new Date(currentDate.getTime() - millisecondsInDay);
+    const [mainDate,setMainDate] = useState(previousDay);
+    const [name,setName] = useState("");
+    async function fetchData(){
+        let currMonthTotal = await dispatch(getCurrentMonthSum(token));
+        console.log("ye hai expense",currMonthTotal);
+        setTotalExpense(currMonthTotal.data?.data?.Totalsum);
+        setName(localStorage.getItem("userName"));
+        let additionalDetails = await dispatch(getAdditionalDetails(token));
+        setTotalData(currMonthTotal.data?.data);
+        setBudget(additionalDetails.data?.data?.personalexpense);
+    }
+
+    useEffect(()=>{
+        setLoading(true);
+        fetchData();
+        setLoading(false);
+    },[]);
+
   return (
    
     <div className='w-[100%] h-screen flex flex-row overflow-y-hidden'>
     {/* dashborad navigator */}
     <div className='w-[20%] h-[100%]'>
-        <DashboardNav/>
+        <DashboardNav name={name}/>
     </div>
     {/* dashboard */}
     <div className='w-[80%] h-[100%] flex flex-col '>
@@ -51,7 +83,7 @@ const Expense = () => {
                                 </div>
                                 <div className='flex flex-row justify-center items-center'>
                                     <span><BiRupee style={iconStyles}/></span>
-                                    <span className='text-3xl font-medium '>  250 </span>
+                                    <span className='text-3xl font-medium '> {loading?(<Spinner/>):(<p>{budget}</p>)}</span>
                                 </div>
                             
                         </div>
@@ -63,7 +95,7 @@ const Expense = () => {
                                 </div>
                                 <div className='flex flex-row justify-center items-center'>
                                     <span><BiRupee style={iconStyles}/></span>
-                                    <span className='text-3xl font-medium'>  250 </span>
+                                    <span className='text-3xl font-medium'> {loading?(<Spinner/>):(<p>{totalExpense}</p>)} </span>
                                 </div>
                             
                         </div>
@@ -104,27 +136,27 @@ const Expense = () => {
                 
                             <div className='bg-white flex flex-row justify-evenly items-center     w-[90%] h-[12%] rounded-xl box-shadow'>
                                <p className='text-4xl font-semibold text-primary-blue'> Food: </p>
-                               <p className='text-3xl font-medium '>0%</p>
+                               <p className='text-3xl font-medium '>{loading?(<Spinner/>):(<p>{((Number(totalData!==0?totalData.foodsum:0)/totalExpense)*(100)).toFixed(2)}%</p>)}</p>
                             </div>
                             <div className='bg-white flex flex-row justify-evenly items-center     w-[90%] h-[12%] rounded-xl box-shadow'>
                                <p className='text-4xl font-semibold text-primary-blue'> Travel: </p>
-                               <p className='text-3xl font-medium '>0%</p>
+                               <p className='text-3xl font-medium '>{loading?(<Spinner/>):(<p>{((Number(totalData!==0?totalData.travelsum:0)/totalExpense)*(100)).toFixed(2)}%</p>)}</p>
                             </div>
                             <div className='bg-white flex flex-row justify-evenly items-center     w-[90%] h-[12%] rounded-xl box-shadow'>
-                               <p className='text-4xl font-semibold text-primary-blue'> Helath: </p>
-                               <p className='text-3xl font-medium '>0%</p>
+                               <p className='text-4xl font-semibold text-primary-blue'> Health: </p>
+                               <p className='text-3xl font-medium '>{loading?(<Spinner/>):(<p>{((Number(totalData!==0?totalData.healthsum:0)/totalExpense)*(100)).toFixed(2)}%</p>)}</p>
                             </div>
                             <div className='bg-white flex flex-row justify-evenly items-center     w-[90%] h-[12%] rounded-xl box-shadow'>
                                <p className='text-4xl font-semibold text-primary-blue'> Grocery: </p>
-                               <p className='text-3xl font-medium '>0%</p>
+                               <p className='text-3xl font-medium '>{loading?(<Spinner/>):(<p>{((Number(totalData!==0?totalData.grocerySum:0)/totalExpense)*(100)).toFixed(2)}%</p>)}</p>
                             </div>
                             <div className='bg-white flex flex-row justify-evenly items-center     w-[90%] h-[12%] rounded-xl box-shadow'>
                                <p className='text-4xl font-semibold text-primary-blue'> Electronics: </p>
-                               <p className='text-3xl font-medium '>0%</p>
+                               <p className='text-3xl font-medium '>{loading?(<Spinner/>):(<p>{((Number(totalData!==0?totalData.Electronicsum:0)/totalExpense)*(100)).toFixed(2)}%</p>)}</p>
                             </div>
                             <div className='bg-white flex flex-row justify-evenly items-center     w-[90%] h-[12%] rounded-xl box-shadow'>
                                <p className='text-4xl font-semibold text-primary-blue'> Others: </p>
-                               <p className='text-3xl font-medium '>0%</p>
+                               <p className='text-3xl font-medium '>{loading?(<Spinner/>):(<p>{((Number(totalData!==0?totalData.othersum:0)/totalExpense)*(100)).toFixed(2)}%</p>)}</p>
                             </div>
                           
 

@@ -5,6 +5,7 @@ const WalletTransactionTable = require('../models/WalletTransactionTable');
 const StockTable = require('../models/StockTable')
 const TransactionTable= require('../models/TransactionTable');
 const jwt = require('jsonwebtoken');
+const ExpenseTable = require('../models/ExpenseTable');
 require("dotenv").config({ path: './vars/.env' });
 
 
@@ -65,6 +66,15 @@ exports.signUp = async(req,res)=>{
                 message:"Error occured while creating wallettranstable"
             }); 
         }
+        const transactionTableCreation = await ExpenseTable.create({userId:CurrUser._id});
+        if(!transactionTableCreation){
+            return res.status(403).json({
+                success:false,
+                message:"Error while creating table"
+            });
+        }
+
+
         const createStockTableRes = await StockTable.create({walletid:walletCreationResponse._id});
         if(!createStockTableRes){
             res.status(403).json({
@@ -121,11 +131,7 @@ exports.login=async (req,res)=>{
                 message:"user not registered , please signup first",
             });
         }
-        // res.status(200).json({
-        //     success:true,
-        //     data:user,
-        //     message:"User logged in successfully",
-        // });
+        
         // generate jwt
         if(await bycrpt.compare(password,user.password)){
             const payload = {

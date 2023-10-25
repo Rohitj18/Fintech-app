@@ -2,12 +2,14 @@ const Wallet= require('../models/Wallet');
 const User = require('../models/User');
 const WalletTransaction = require('../models/WalletTransaction');
 const WalletTransactionTable = require('../models/WalletTransactionTable');
+const { GiConsoleController } = require('react-icons/gi');
 
 
 exports.AddMoney = async(req,res)=>{
     try {
-        const {email,carddetails,amount} = req.body;
-        if(!email||!carddetails||!amount){
+        const {amount} = req.body;
+        const user = req.user;
+        if(!amount){
             return res.status(403).json({
                 success:false,
                 message:"all field required",
@@ -19,26 +21,22 @@ exports.AddMoney = async(req,res)=>{
                 message:"Amount should be greater than zero",
             }); 
         }
-        const user = await User.findOne({email});
-        console.log(user);
-        
-        const response = await Wallet.findOneAndUpdate({userId:user._id}, {$inc : {currentbalance : Number(amount)}}).exec();
+        console.log("ye user hai",user);
+        const response = await Wallet.findOneAndUpdate({userId:user.id}, {$inc : {currentbalance : Number(amount)}}).exec();
         if(!response){
             return res.status(402).json({
                 success:false,
                 message:"Error occured while adding money",
             }); 
         }
-        const walletId = await Wallet.findOne({_id:user.walletId});
-        console.log(walletId);
-        const walletTransRes = await WalletTransaction.create({walletid:walletId._id,amount:Number(amount)});
+        const walletTransRes = await WalletTransaction.create({walletid:user.walletId,amount:Number(amount)});
         if(!walletTransRes){
             return res.status(402).json({
                 success:false,
                 message:"Error occured while creating wallettransaction"
             }); 
         }
-        const walletTransupdate = await WalletTransactionTable.findOneAndUpdate({walletid:walletId._id},{$push:{allWalletTrans:walletTransRes._id}});
+        const walletTransupdate = await WalletTransactionTable.findOneAndUpdate({walletid:user.walletId},{$push:{allWalletTrans:walletTransRes._id}});
         if(!walletTransupdate){
             return res.status(402).json({
                 success:false,
@@ -64,7 +62,8 @@ exports.AddMoney = async(req,res)=>{
  
 exports.getWalletDetails = async(req,res)=>{
     try {
-        const {userId} = req.body;
+        const userId = req.user.id;
+        console.log("this is wallet controller",req.user);
         if(!userId){
             return res.status(403).json({
                 success:false,
@@ -82,6 +81,7 @@ exports.getWalletDetails = async(req,res)=>{
             }
         }
         const wallet = await Wallet.findOne({userId:userId}).populate('transactionhistroy','wallettransactionhistory').exec();
+        const wallethistory = await WalletTransactionTable.findOne({_id:wallet.wallettransactionhistory}).populate('allWalletTrans').exec();   
         if(!wallet){
             return res.status(402).json({
                 success:false,
@@ -92,6 +92,7 @@ exports.getWalletDetails = async(req,res)=>{
         res.status(200).json({
             success:true,
             data:wallet,
+            wallet:wallethistory,
             message:"succesfully fetched wallet data",
         }); 
         

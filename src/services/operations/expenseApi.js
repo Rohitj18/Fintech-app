@@ -8,7 +8,7 @@ import { expenseEndPoints } from "../api"
 //     GETALLEXPENSE_API:BASE_URL+"/getallExpense",
 //     DELETEEXPENSE_API:BASE_URL+"/deleteExpense"
 
-const {CREATEEXPENSE_API,GETALLEXPENSE_API,DELETEEXPENSE_API,GETDATEEXPENSE_API} = expenseEndPoints
+const {CREATEEXPENSE_API,GETALLEXPENSE_API,DELETEEXPENSE_API,GETDATEEXPENSE_API,GETCURRENTMONTHSUM_API,GETCURRENTMONTHEXPARR_API} = expenseEndPoints
 
 export function createExpense(token,category,amount,name,desc,timeStamp) {
     return async (dispatch) => {
@@ -61,6 +61,62 @@ export function getDateExpenes(token,date) {
     dispatch(setLoading(false))
   }
 }
+
+export function getCurrentMonthSum(token) {
+  return async (dispatch) => {
+    dispatch(setLoading(true))
+    try {
+      
+      const response = await apiConnector("GET", GETCURRENTMONTHSUM_API,
+        {}
+      ,{
+        Authorization: `Bearer ${token}`,
+      });
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message)
+      }
+      dispatch(setLoading(false))
+      return response;
+    } catch (error) {
+      console.log("SIGNUP API ERROR............", error)
+      toast.error("Something went wrong")
+    }
+    dispatch(setLoading(false))
+  }
+}
+
+export function getCurrentMonthExpenseArr(token) {
+  return async (dispatch) => {
+    dispatch(setLoading(true))
+    try {
+      
+      const response = await apiConnector("GET", GETCURRENTMONTHEXPARR_API,
+        {}
+      ,{
+        Authorization: `Bearer ${token}`,
+      });
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message)
+      }
+      dispatch(setLoading(false))
+      return response;
+    } catch (error) {
+      console.log("SIGNUP API ERROR............", error)
+      toast.error("Something went wrong")
+    }
+    dispatch(setLoading(false))
+  }
+}
+
+
+
+
+
+
+
+
 
 // export function signUp(
 //     stockName,year

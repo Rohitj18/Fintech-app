@@ -66,9 +66,9 @@ const Profile = () => {
           <p>Fill your Details</p>
         </div>
 
-        <div className='nav-link text-white text-3xl mr-[4em]'>
+        {/* <div className='nav-link text-white text-3xl mr-[4em]'>
           <NavLink data-id="1" style={{ textDecoration: 'none' }} to="/dashboard" >Skip for later</NavLink>
-        </div>
+        </div>*/}
 
       </div>
 

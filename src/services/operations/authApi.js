@@ -1,6 +1,6 @@
 import { toast } from "react-hot-toast"
 import { setLoading, setToken } from "../../slices/authSlice"
-import { setUser } from "../../slices/profileSlice"
+import { setUser,setAdditionalDetails } from "../../slices/profileSlice"
 import { apiConnector } from "../apiconnector"
 import { AuthEndPoints } from "../api"
 
@@ -63,7 +63,13 @@ export function signUp(
         dispatch(setUser({ ...response.data.user, image: userImage }))
         localStorage.setItem("token", JSON.stringify(response.data.token))
         localStorage.setItem("user",JSON.stringify(response.data.user));
-        navigate("/profile");
+        let isAdditionalDetail = await dispatch(getAdditionalDetails(response.data.token));
+        console.log("ye frontend ka addtional hai",isAdditionalDetail);
+        if(isAdditionalDetail.data?.success){
+          navigate("/dashboard");
+        }else{
+          navigate("/profile");
+        }
       } catch (error) {
         console.log("LOGIN API ERROR............", error)
         toast.error("Login Failed")
@@ -76,7 +82,6 @@ export function signUp(
   export function createAdditonalDetails(token,formData,navigate) {
     return async (dispatch) => {
       const toastId = toast.loading("Loading...")
-      console.log("reached till here");
       dispatch(setLoading(true))
       try {
         const response = await apiConnector("POST", ADDDET_API,
@@ -110,6 +115,33 @@ export function signUp(
       toast.dismiss(toastId)
     }
   }
+
+  export function getAdditionalDetails(token) {
+    return async (dispatch) => {
+      dispatch(setLoading(true))
+      try {
+        const response = await apiConnector("GET", GETADDDET_API,
+          {},
+          {
+            Authorization: `Bearer ${token}`,
+          },
+        )
+  
+  
+        if (!response.data.success) {
+          throw new Error(response.data.message)
+        }
+        
+        return response;
+      } catch (error) {
+        console.log("No additional details", error)
+        toast.error("No additional details found")
+      }
+      dispatch(setLoading(false))
+    }
+  }
+
+
 
   export function logout(navigate) {
     return (dispatch) => {

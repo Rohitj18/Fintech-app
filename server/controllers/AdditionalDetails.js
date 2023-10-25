@@ -5,9 +5,8 @@ const cloudinary = require('cloudinary').v2;
 
 exports.getAdditionalDetails = async(req,res)=>{
     try {
-        const {email} = req.body;
-        const user = await User.findOne({email});
-        const response = await AdditionalDetails.findOne({userId:user._id});
+        const userId = req.user.id;
+        const response = await AdditionalDetails.findOne({userId:userId});
         if(!response){
             return res.status(403).json({
                 success:false,
@@ -46,7 +45,6 @@ exports.createAdditionalDetails = async(req,res)=>{
     try {
         const {firstName,lastName,gender,aadharnumber,pannumber,dob,city,zipcode,state,address,annualincome,personalexpense,phoneno,country,image} = req.body;
         const userId = req.user.id;
-        console.log("this is the user id",userId);
         if(!firstName||!lastName||!gender||!aadharnumber||!pannumber||!dob||!city||!zipcode||!state||!address||!annualincome||!personalexpense||!phoneno||!country){
             return res.status(402).json({
                 success:false,
@@ -55,7 +53,6 @@ exports.createAdditionalDetails = async(req,res)=>{
         }
 
         const response = await AdditionalDetails.create({userId,firstName,lastName,gender,aadharnumber,pannumber,dob,city,zipcode,state,address,annualincome,personalexpense,phoneno,country});
-        console.log("reached below the add dets respons");
         if(!response){
             return res.status(403).json({
                 success:false,
@@ -64,7 +61,6 @@ exports.createAdditionalDetails = async(req,res)=>{
         }
         
         let imageurl = image;
-        console.log("THIS IS THE IMAGE URL",imageurl);
         if(image.substring(0,5)!=="https"){
             console.log("Went inside https condition")
             const upload = await uploadFileToCloudinary(image,"StudyNotion");

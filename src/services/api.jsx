@@ -16,6 +16,8 @@ export const expenseEndPoints={
     GETALLEXPENSE_API:BASE_URL+"/getallExpense",
     DELETEEXPENSE_API:BASE_URL+"/deleteExpense",
     GETDATEEXPENSE_API:BASE_URL+"/getDateExpense",
+    GETCURRENTMONTHSUM_API:BASE_URL+"/getCurrentMonthSum",
+    GETCURRENTMONTHEXPARR_API:BASE_URL+"/getCurrentExpenseArr"
 }
 
 export const walletEndPoints={  

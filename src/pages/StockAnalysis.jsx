@@ -24,6 +24,7 @@ const StockAnalysis = () => {
     const [loserArr, setLoserArr] = useState([]);
     const [mergeArr, setMergeArr] = useState([]);
     const [clickedStock,setClickedStock] = useState("");
+    const [name,setName] = useState("");
     const buttonHanlder = (e) => {
 
         const id = e.currentTarget.id;
@@ -71,6 +72,7 @@ const StockAnalysis = () => {
         setGainerArr(newGainerArr);
         setLoserArr(newLoserArr);
         setMergeArr(newMergeArr);
+        setName(localStorage.getItem("userName"));
 
     }
 
@@ -88,7 +90,7 @@ const StockAnalysis = () => {
             {/* dashborad navigator */}
 
             <div className='h-screen w-[20%]'>
-                <DashboardNav />
+                <DashboardNav name={name}/>
             </div>
             {/* dashboard */}
             <div className='w-[80%] h-[100%] flex flex-col'>

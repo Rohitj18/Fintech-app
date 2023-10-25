@@ -8,14 +8,13 @@ import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
-const DashboardNav = () => {
+const DashboardNav = ({name}) => {
     let iconStyles = { color: "white" };
     const {user}= useSelector((state)=>state.profile) || localStorage.getItem("user");
     const currLocation = useLocation();
     const tabSelector = currLocation.pathname.split('/').at(-1);
     const navigate = useNavigate();
     
-    console.log(tabSelector);
   return (
     <div className='flex flex-col w-[100%] h-[100%] bg-ternary-color py-12'>
                 {/* profile */}
@@ -26,7 +25,7 @@ const DashboardNav = () => {
                         </div>
                     </div>
                     <div className='flex flex-row gap-3'>
-                        <div className='font-semibold text-3xl text-white'>Rohit Jabade</div>
+                        <div className='font-semibold text-3xl text-white'>{name}</div>
                         <IoSettingsSharp size={22} style={{"color":"white"}} className='transition-all duration-300 ease-in-out hover:-rotate-90' onClick={()=>navigate("/settings/profile")}/>
                     </div>
                 </div>
@@ -36,7 +35,7 @@ const DashboardNav = () => {
                         <AiOutlineDashboard size={24} style={iconStyles}/>
                         <p className='text-3xl text-white'>Dashboard</p>
                     </div>
-                    <div className={`flex flex-row gap-4 w-[100%] h-[10%] px-12 ${tabSelector==="sip-calculator"?" bg-primary-blue bg-opacity-25 border-l-8 border-blue-800":""} transition-all duration-800 ease-in-out hover:bg-primary-blue hover:bg-opacity-25 hover:border-l-8 border-blue-800 justify-start items-center`}>
+                    <div onClick={()=>navigate("/sip-calculator")} className={`flex flex-row gap-4 w-[100%] h-[10%] px-12 ${tabSelector==="sip-calculator"?" bg-primary-blue bg-opacity-25 border-l-8 border-blue-800":""} transition-all duration-800 ease-in-out hover:bg-primary-blue hover:bg-opacity-25 hover:border-l-8 border-blue-800 justify-start items-center`}>
                         <AiOutlineCalculator size={24} style={iconStyles}/>
                         <p className='text-3xl text-white'>SIP Calculator</p>
                     </div>

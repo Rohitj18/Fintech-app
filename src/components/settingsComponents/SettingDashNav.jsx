@@ -4,16 +4,20 @@ import {IoWalletSharp} from 'react-icons/io5'
 import {BsHeadphones} from 'react-icons/bs'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
+import { useState ,useEffect} from 'react'
 
-const SettingDashNav = () => {
+const SettingDashNav = ({name}) => {
     let iconStyles = { color: "white" };
     const {user}= useSelector((state)=>state.profile) || localStorage.getItem("user");
     const currLocation = useLocation();
     const tabSelector = currLocation.pathname.split('/').at(-1);
     const navigate = useNavigate();
+    const[userName,setUserName] = useState("");
+    useEffect(()=>{
+        setUserName(JSON.parse(localStorage.getItem("UserName")))
+    },[])
     
-    console.log(tabSelector);
   return (
     <div className='flex flex-col w-[100%] h-[100%] bg-ternary-color py-12'>
                 {/* profile */}
@@ -24,7 +28,7 @@ const SettingDashNav = () => {
                         </div>
                     </div>
                     <div className='flex flex-row gap-3'>
-                        <div className='font-semibold text-3xl text-white'>Rohit Jabade</div>
+                        <div className='font-semibold text-3xl text-white'>{userName}</div>
                     </div>
                 </div>
                 <div className='w-[70%] h-[0.2%] mx-auto bg-primary-blue mt-[1em]'></div>
