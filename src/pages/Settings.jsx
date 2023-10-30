@@ -14,7 +14,7 @@ const Settings = () => {
     const dispatch = useDispatch();
     const [currentBalance, setCurrentBalance] = useState(0);
     const [wallethistory,setWalletHistory] = useState([]);
-    const { token ,userName} = useSelector((state) => state.auth);
+    const { token} = useSelector((state) => state.auth);
     const [name,setName] = useState("");
     const fetchData = async () => {
         let walletDetailsResponse = await dispatch(getWalletDetails(token));

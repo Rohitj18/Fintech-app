@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CreditCard from "./CreditCard";
 import {BsArrowRight} from 'react-icons/bs'

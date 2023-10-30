@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import profilephoto from "../../assets/profilephoto.jpg"
-import { AiOutlineArrowLeft } from "react-icons/ai";
+// import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { createAdditonalDetails } from "../../services/operations/authApi"
 
@@ -10,7 +10,7 @@ const MyProfile = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { token } = useSelector((state) => state.auth);
-    let iconStyles = { color: "white", fontSize: '2.3rem' };
+    // let iconStyles = { color: "white", fontSize: '2.3rem' };
     const [formData, setFormData] = useState({
         //firstName,lastName,gender,aadharnumber,pannumber,dob,city,zipcode,state,address,annualincome,personalexpense,phoneno,country,image
         firstName: "", lastName: "", gender: "", aadharnumber: "", pannumber: "", dob: "", city: "", zipcode: "", state: "", address: "", annualincome: "", personalexpense: "", phoneno: "", country: "", image: ""
@@ -27,8 +27,6 @@ const MyProfile = () => {
 
     function submitHandler(event) {
         event.preventDefault();
-        console.log("Printing the formData ");
-        console.log(formData);
         if (formData.image === "") {
             formData.image = `https://api.dicebear.com/5.x/initials/svg?seed=${formData.firstName}%20${formData.lastName}`
         }

@@ -1,8 +1,9 @@
 import { toast } from "react-hot-toast"
 import { setLoading, setToken } from "../../slices/authSlice"
-import { setUser,setAdditionalDetails } from "../../slices/profileSlice"
+import { setUser } from "../../slices/profileSlice"
 import { apiConnector } from "../apiconnector"
 import { AuthEndPoints } from "../api"
+
 
 const {LOGIN_API,SIGNUP_API,GETADDDET_API,ADDDET_API} = AuthEndPoints;
 
@@ -22,7 +23,7 @@ export function signUp(
           confirmpassword,
         })
   
-        console.log("SIGNUP API RESPONSE............", response)
+        // console.log("SIGNUP API RESPONSE............", response)
   
         if (!response.data.success) {
           throw new Error(response.data.message)
@@ -30,7 +31,7 @@ export function signUp(
         toast.success("Signup Successful")
         navigate("/login")
       } catch (error) {
-        console.log("SIGNUP API ERROR............", error)
+        // console.log("SIGNUP API ERROR............", error)
         toast.error("Signup Failed")
         navigate("/signup")
       }
@@ -49,7 +50,7 @@ export function signUp(
           password
         })
   
-        console.log("LOGIN API RESPONSE............", response)
+        // console.log("LOGIN API RESPONSE............", response)
   
         if (!response.data.success) {
           throw new Error(response.data.message)
@@ -64,14 +65,13 @@ export function signUp(
         localStorage.setItem("token", JSON.stringify(response.data.token))
         localStorage.setItem("user",JSON.stringify(response.data.user));
         let isAdditionalDetail = await dispatch(getAdditionalDetails(response.data.token));
-        console.log("ye frontend ka addtional hai",isAdditionalDetail);
         if(isAdditionalDetail.data?.success){
           navigate("/dashboard");
         }else{
           navigate("/profile");
         }
       } catch (error) {
-        console.log("LOGIN API ERROR............", error)
+        // console.log("LOGIN API ERROR............", error)
         toast.error("Login Failed")
       }
       dispatch(setLoading(false))
@@ -90,8 +90,12 @@ export function signUp(
             Authorization: `Bearer ${token}`,
           },
         )
-  
-        console.log("AdditionalDetails response...", response)
+        
+          if(response.data?.data==="exp"){
+            dispatch(logout(navigate));
+          }
+
+        // console.log("AdditionalDetails response...", response)
   
         if (!response.data.success) {
           throw new Error(response.data.message)
@@ -104,12 +108,11 @@ export function signUp(
         const imageurl = response.data.url;
         userData.image = imageurl.toString();
         dispatch(setUser({...userData}));
-        console.log("This is the user data in add dets",userData);
         localStorage.setItem("user",JSON.stringify(userData));
         navigate("/dashboard");
       } catch (error) {
-        console.log("LOGIN API ERROR............", error)
-        toast.error("Login Failed")
+        // console.log("create additional details failed", error)
+        toast.error("Please try again")
       }
       dispatch(setLoading(false))
       toast.dismiss(toastId)
@@ -126,7 +129,7 @@ export function signUp(
             Authorization: `Bearer ${token}`,
           },
         )
-  
+        
   
         if (!response.data.success) {
           throw new Error(response.data.message)
@@ -134,7 +137,7 @@ export function signUp(
         
         return response;
       } catch (error) {
-        console.log("No additional details", error)
+        // console.log("No additional details", error)
         toast.error("No additional details found")
       }
       dispatch(setLoading(false))

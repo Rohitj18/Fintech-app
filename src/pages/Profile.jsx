@@ -20,15 +20,12 @@ const Profile = () => {
     const { name, value, checked, type } = event.target
     setFormData((prevData) => ({
       ...prevData,
-      //   [event.target.name]: event.target.value,
       [name]: type === "checkbox" ? checked : value
     }));
   }
 
   function submitHandler(event) {
     event.preventDefault();
-    console.log("Printing the formData ");
-    console.log(formData);
     if(formData.image===""){
       formData.image = `https://api.dicebear.com/5.x/initials/svg?seed=${formData.firstName}%20${formData.lastName}` 
     }

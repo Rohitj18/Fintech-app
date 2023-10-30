@@ -1,7 +1,7 @@
 const Expense = require('../models/Expense');
-const User = require('../models/User');
+// const User = require('../models/User');
 const ExpenseTable = require('../models/ExpenseTable');
-const { GiConsoleController } = require('react-icons/gi');
+// const { GiConsoleController } = require('react-icons/gi');
 const moment = require('moment'); 
 
 
@@ -9,7 +9,6 @@ exports.CreateExpense = async(req,res)=>{
     try {
         let {category,amount,name,desc,timeStamp} = req.body;
         const userId = req.user.id;
-        // console.log("This is the recieved time",timeStamp);
         if(!userId||!category||!amount||!name||!desc){
             return res.status(403).json({
                 success:false,
@@ -86,7 +85,6 @@ exports.getDateExpense = async(req,res)=>{
                 message:"No expense table found",
             });
         }
-        console.log("this is backend res",response);
         res.status(200).json({
             success:true,
             data:response,
@@ -186,8 +184,6 @@ exports.getCurrentMonthSum = async(req,res)=>{
             othersum,
         }
 
-
-        console.log("this is backend res",response);
         res.status(200).json({
             success:true,
             data:responseData,
@@ -234,7 +230,6 @@ exports.getCurrentExpenseArr = async(req,res)=>{
             });
         }
         
-        console.log("this is backend res",response);
         res.status(200).json({
             success:true,
             data:response,

@@ -18,9 +18,9 @@ const Sip = () => {
   const [sliderValue2, setSliderValue2] = useState(0);
   const [sliderValue3, setSliderValue3] = useState(0);
 
-  const [investedAmount, setInvestedAmount] = useState(0);
+  // const [investedAmount, setInvestedAmount] = useState(0);
   const [estimatedReturns, setEstimatedReturns] = useState(0);
-  const [totalValue, setTotalValue] = useState(0);
+  // const [totalValue, setTotalValue] = useState(0);
   const [name,setName] = useState("");
  
 

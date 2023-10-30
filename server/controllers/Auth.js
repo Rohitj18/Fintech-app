@@ -41,7 +41,6 @@ exports.signUp = async(req,res)=>{
         }
         const CurrUser = await User.findOne({email:email});
         const walletCreationResponse = await Wallet.create({userId:CurrUser._id});
-        console.log(walletCreationResponse);
         if(!walletCreationResponse){
             return res.status(402).json({
                 success:false,
@@ -50,7 +49,6 @@ exports.signUp = async(req,res)=>{
         }
 
         const updateUser = await User.findOneAndUpdate({_id:CurrUser._id},{walletId:walletCreationResponse._id});
-        console.log(updateUser);
         if(!updateUser){
             return res.status(402).json({
                 success:false,
@@ -58,7 +56,6 @@ exports.signUp = async(req,res)=>{
             });
         }
         const walletTransTableCreation = await WalletTransactionTable.create({walletid:walletCreationResponse._id});
-        console.log(walletTransTableCreation);
         if(!walletTransTableCreation){
             
             return res.status(402).json({

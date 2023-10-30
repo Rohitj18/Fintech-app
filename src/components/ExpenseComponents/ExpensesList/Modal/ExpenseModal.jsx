@@ -7,8 +7,6 @@ function ExpenseModal() {
   const [formData, setFormData] = useState(  {item: "", 
   price: "" } );
 
-  // console.log(formData)
-
   function changeHandler(event) {
     const {name, value, checked, type} = event.target
     setFormData(prevFormData => {
@@ -21,9 +19,6 @@ function ExpenseModal() {
 
   function submitHandler(event) {
     event.preventDefault();
- 
-    console.log("Finally printing the entireform ka data ........")
-    console.log(formData)
   }
 
   return (

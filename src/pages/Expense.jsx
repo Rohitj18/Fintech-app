@@ -3,7 +3,7 @@ import DashboardNav from '../components/DashboardComponents/DashboardNav'
 import { AiOutlineSearch} from 'react-icons/ai'
 import { BiBell } from 'react-icons/bi'
 import { GrMailOption } from 'react-icons/gr'
-import { GiConsoleController, GiMoneyStack } from 'react-icons/gi'
+import { GiMoneyStack } from 'react-icons/gi'
 import { BiRupee } from 'react-icons/bi'
 import { GiReceiveMoney } from 'react-icons/gi'
 import StripCalender from '../components/ExpenseComponents/StripCalender'
@@ -31,7 +31,6 @@ const Expense = () => {
     const [name,setName] = useState("");
     async function fetchData(){
         let currMonthTotal = await dispatch(getCurrentMonthSum(token));
-        console.log("ye hai expense",currMonthTotal);
         setTotalExpense(currMonthTotal.data?.data?.Totalsum);
         setName(localStorage.getItem("userName"));
         let additionalDetails = await dispatch(getAdditionalDetails(token));

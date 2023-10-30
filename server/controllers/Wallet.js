@@ -1,8 +1,8 @@
 const Wallet= require('../models/Wallet');
-const User = require('../models/User');
+// const User = require('../models/User');
 const WalletTransaction = require('../models/WalletTransaction');
 const WalletTransactionTable = require('../models/WalletTransactionTable');
-const { GiConsoleController } = require('react-icons/gi');
+// const { GiConsoleController } = require('react-icons/gi');
 
 
 exports.AddMoney = async(req,res)=>{
@@ -21,7 +21,6 @@ exports.AddMoney = async(req,res)=>{
                 message:"Amount should be greater than zero",
             }); 
         }
-        console.log("ye user hai",user);
         const response = await Wallet.findOneAndUpdate({userId:user.id}, {$inc : {currentbalance : Number(amount)}}).exec();
         if(!response){
             return res.status(402).json({
@@ -63,7 +62,6 @@ exports.AddMoney = async(req,res)=>{
 exports.getWalletDetails = async(req,res)=>{
     try {
         const userId = req.user.id;
-        console.log("this is wallet controller",req.user);
         if(!userId){
             return res.status(403).json({
                 success:false,

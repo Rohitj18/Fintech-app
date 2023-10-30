@@ -6,16 +6,16 @@ import DashboardNav from '../components/DashboardComponents/DashboardNav'
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
 import StockInfo from '../components/stockAnalysisComponents/StockInfo'
 import { data } from '../components/LandingPageComponents/Data'
-import { StockData } from '../components/data/datapoints'
-import { current } from '@reduxjs/toolkit'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+// import { StockData } from '../components/data/datapoints'
+// import { current } from '@reduxjs/toolkit'
+// import { useDispatch } from 'react-redux'
+// import { useNavigate } from 'react-router-dom'
 
-import {Get_Gain_Loser} from '../services/operations/stockAPi'
+// import {Get_Gain_Loser} from '../services/operations/stockAPi'
 
 const StockAnalysis = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    // const dispatch = useDispatch();
+    // const navigate = useNavigate();
     const [displayArr, setDisplayArr] = useState([]);
     const [allButton, setAllButton] = useState(true);
     const [gainButton, setGainButton] = useState(false);
@@ -55,13 +55,9 @@ const StockAnalysis = () => {
     
 
     const fetchData = async () => {
-        console.log("I am called");
-        const stData = await dispatch(Get_Gain_Loser());
-        // console.log("This is the newstData",stData);
-        const topGainers = stData.data?.data["Top Gainers"];
-        const toplosers = stData.data?.data["Top Gainers"];
-        console.log("This is the topgainer",topGainers);
-
+        // const stData = await dispatch(Get_Gain_Loser());
+        // const topGainers = stData.data?.data["Top Gainers"];
+        // const toplosers = stData.data?.data["Top Gainers"];
         let newGainerArr = data.top_gainers;
         let newLoserArr = data.top_losers;
         let newMergeArr = newGainerArr.concat(newLoserArr);

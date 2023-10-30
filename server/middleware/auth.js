@@ -13,13 +13,20 @@ exports.auth = async(req,res,next)=>{
         }
         try{
             const decode = jwt.verify(token,process.env.JWT_SECRET);
-            // console.log(decode);
             req.user = decode;
-            console.log("This is middler ware data",req.user);
         }catch(error){
             return res.status(401).json({
                 success:false,
                 message:'token is invalid',
+            });
+        }
+        const expirationTime = req.user.exp * 1000; // Convert to milliseconds
+        const currentTime = Date.now();
+
+        if (currentTime > expirationTime) {
+            return res.status(401).json({ 
+                data:"exp",
+                message: 'Token has expired' 
             });
         }
         next();
@@ -32,22 +39,3 @@ exports.auth = async(req,res,next)=>{
     }
 }
 
-//isStudent
-
-
-// exports.isAdmin = async (req,res,next)=>{
-//     try {
-//         if(req.user.accountType !=="Admin"){
-//             return res.status(401).json({
-//                 success:false,
-//                 message:'this route is protected for Admins only',
-//             });
-//         }
-//         next();
-//     } catch (error) {
-//         return res.status(500).json({
-//             success:false,
-//             message:'User cannot be verified please try again',
-//         });
-//     }
-// }

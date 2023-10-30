@@ -29,10 +29,6 @@ const LoginForm = () => {
 
     function submitHandler(event) {
         event.preventDefault();
-
-
-        // console.log("Printing the formData ");
-        // console.log(formData)
         dispatch(login(formData.email, formData.password, navigate))
         
 

@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./Navbar";
 import Cards from "./Crads";
 import Filter from "./Filter";
-import { apiUrl, filterData } from "./data";
+import { filterData } from "./data";
 import { useState, useEffect } from "react";
 import Spinner from "./Spinner";
 import {toast} from "react-toastify";
@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 const Main = ({mainDate,setMainDate}) => {
   const dispatch = useDispatch();
   const {token} = useSelector((state)=>state.auth);
-  const [courses, setCourses] = useState(null);
+  // const [courses, setCourses] = useState(null);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState(filterData[0].title);
   const [modal, setModal] = useState(false);
@@ -33,9 +33,6 @@ const Main = ({mainDate,setMainDate}) => {
 
   function submitHandler(event) {
     event.preventDefault();
-
-    console.log("Finally printing the entireform ka data ........");
-    console.log(formData);
     let timeStamp = mainDate;
     dispatch(createExpense(token,formData.category,formData.amount,formData.name,formData.desc,timeStamp));
     setExpensesArr([...expensesArr, formData]);
@@ -50,7 +47,6 @@ const Main = ({mainDate,setMainDate}) => {
       let currDateExpense = await dispatch(getDateExpenes(token,date));
       setExpensesArr([]);
       setExpensesArr(currDateExpense.data?.data);
-      console.log("This is the backend cum",currDateExpense.data?.data);
     } catch (error) {
       toast.error("Something went wrong");
     }

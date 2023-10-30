@@ -1,4 +1,4 @@
-const { secureHeapUsed } = require('crypto');
+// const { secureHeapUsed } = require('crypto');
 const AdditionalDetails = require('../models/AdditionalDetails');
 const User = require('../models/User');
 const cloudinary = require('cloudinary').v2;
@@ -36,9 +36,9 @@ async function uploadFileToCloudinary(file,folder){
 
 }
 
-function isFileTypeSupported(type,supportedFiles){
-    return supportedFiles.includes(type);
-}
+// function isFileTypeSupported(type,supportedFiles){
+//     return supportedFiles.includes(type);
+// }
 
 
 exports.createAdditionalDetails = async(req,res)=>{
@@ -62,7 +62,6 @@ exports.createAdditionalDetails = async(req,res)=>{
         
         let imageurl = image;
         if(image.substring(0,5)!=="https"){
-            console.log("Went inside https condition")
             const upload = await uploadFileToCloudinary(image,"StudyNotion");
             imageurl=upload.secure_url;
         }

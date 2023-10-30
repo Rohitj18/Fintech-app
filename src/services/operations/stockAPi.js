@@ -1,12 +1,9 @@
 import { toast } from "react-hot-toast"
 import { setLoading } from "../../slices/authSlice"
-// import { setUser } from "../../slices/profileSlice"
 import { apiConnector } from "../apiconnector"
 import { yahooEndPoints } from "../api"
 
-// CREATEEXPENSE_API:BASE_URL+"/createExpense",
-//     GETALLEXPENSE_API:BASE_URL+"/getallExpense",
-//     DELETEEXPENSE_API:BASE_URL+"/deleteExpense"
+
 
 const {GET_GAINER_LOSER_API,GET_STOCK_DATA} = yahooEndPoints;
 
@@ -28,7 +25,7 @@ export function Get_Gain_Loser() {
         toast.dismiss(toastId)
         return response;
       } catch (error) {
-        console.log("SIGNUP API ERROR............", error)
+        console.log("Get_Gain_Loser API ERROR............", error)
         toast.error("Something went wrong")
       }
       dispatch(setLoading(false))

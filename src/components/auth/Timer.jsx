@@ -6,19 +6,16 @@ const CountdownTimer = ({ totalSec ,func}) => {
   const [restart, setRestart] = useState(true);
   const [timee, setTime] = useState(Date.now() + totalSec);
 
-  // console.log(countRef);
   const resendVerificationCode = (e, apiii) => {
     e.preventDefault();
     setTime(Date.now() + totalSec);
-    // apiii.start();
   };
 
   const renderer = ({ hours, minutes, seconds, completed, api }) => {
     if (completed) {
-      console.log(api);
       return (
         <div className="inline-block">
-          <a onClick={(e) => resendVerificationCode(e, api)}>Resend</a>
+          <a  href="/#" onClick={(e) => resendVerificationCode(e, api)}>Resend</a>
         </div>
       );
     } else {

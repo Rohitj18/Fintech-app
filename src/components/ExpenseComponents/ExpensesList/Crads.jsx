@@ -1,11 +1,11 @@
 import React from 'react'
 import Card from './Card';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 const Cards = (props) => {
 
     let expensesArr = props.expensesArr
-    let setExpensesArr = props.setExpensesArr
+    // let setExpensesArr = props.setExpensesArr
     
 
 

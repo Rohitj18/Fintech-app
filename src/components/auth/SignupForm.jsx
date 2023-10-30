@@ -54,8 +54,6 @@ const SignupForm = () => {
         //     accountType
         // }
 
-        console.log("printing Final account data ");
-        // console.log(finalData)
         setIsOtpForm(!isOtpForm);
     }
 

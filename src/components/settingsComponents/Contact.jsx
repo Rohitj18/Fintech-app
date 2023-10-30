@@ -1,11 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
-import {  useSelector } from 'react-redux';
+// import {  useSelector } from 'react-redux';
 
 
 const Contact = () => {
     
-    const { token } = useSelector((state) => state.auth);
+    // const { token } = useSelector((state) => state.auth);
 
     const [formData, setFormData] = useState({
         
@@ -23,8 +23,6 @@ const Contact = () => {
 
     function submitHandler(event) {
         event.preventDefault();
-        console.log("Printing the formData ");
-        console.log(formData);
     
     }
 
