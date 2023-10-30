@@ -65,7 +65,7 @@ export function signUp(
         localStorage.setItem("token", JSON.stringify(response.data.token))
         localStorage.setItem("user",JSON.stringify(response.data.user));
         let isAdditionalDetail = await dispatch(getAdditionalDetails(response.data.token));
-        if(isAdditionalDetail.data?.success){
+        if(isAdditionalDetail?.data?.success){
           navigate("/dashboard");
         }else{
           navigate("/profile");
@@ -137,10 +137,12 @@ export function signUp(
         
         return response;
       } catch (error) {
-        // console.log("No additional details", error)
-        toast.error("No additional details found")
+        console.log("No additional details", error)
+        // toast.error("No additional details found")
+      
       }
       dispatch(setLoading(false))
+      return false;
     }
   }
 
