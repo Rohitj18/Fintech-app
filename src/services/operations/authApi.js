@@ -64,7 +64,9 @@ export function signUp(
         dispatch(setUser({ ...response.data.user, image: userImage }))
         localStorage.setItem("token", JSON.stringify(response.data.token))
         localStorage.setItem("user",JSON.stringify(response.data.user));
+        console.log("This is response1",response);
         let isAdditionalDetail = await dispatch(getAdditionalDetails(response.data.token));
+        console.log("This is additional details login",isAdditionalDetail);
         if(isAdditionalDetail?.data?.success){
           navigate("/dashboard");
         }else{
