@@ -131,9 +131,9 @@ export function signUp(
         )
         
   
-        if (!response.data.success) {
-          throw new Error(response.data.message)
-        }
+        // if (!response.data.success) {
+        //   throw new Error(response.data.message)
+        // }
         
         return response;
       } catch (error) {
